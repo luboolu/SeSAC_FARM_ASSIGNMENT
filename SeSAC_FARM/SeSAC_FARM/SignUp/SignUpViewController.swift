@@ -11,7 +11,7 @@ import SnapKit
 class SignUpViewController: UIViewController {
     
     let mainView = SignUpView()
-    var viewModel = SignUpViewModel()
+    let viewModel = SignUpViewModel()
     
     
     override func loadView() {

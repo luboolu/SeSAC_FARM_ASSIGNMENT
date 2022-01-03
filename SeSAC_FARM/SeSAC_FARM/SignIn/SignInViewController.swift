@@ -10,7 +10,7 @@ import UIKit
 class SignInViewController: UIViewController {
     
     let mainView = SignInView()
-    var viewModel = SignInViewModel()
+    let viewModel = SignInViewModel()
     
     override func loadView() {
         self.view = mainView

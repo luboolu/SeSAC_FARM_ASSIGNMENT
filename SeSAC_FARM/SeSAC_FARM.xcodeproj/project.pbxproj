@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC8559EC278313FE00C99B5B /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559EB278313FE00C99B5B /* PostDetailViewController.swift */; };
+		DC8559F02783141100C99B5B /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559EF2783141100C99B5B /* PostDetailViewModel.swift */; };
+		DC8559F32783472800C99B5B /* PostAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559F22783472800C99B5B /* PostAddViewController.swift */; };
 		DCA680DB27802C13001E7598 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA680DA27802C13001E7598 /* AppDelegate.swift */; };
 		DCA680DD27802C13001E7598 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA680DC27802C13001E7598 /* SceneDelegate.swift */; };
 		DCA680DF27802C13001E7598 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA680DE27802C13001E7598 /* ViewController.swift */; };
@@ -33,6 +36,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DC8559EB278313FE00C99B5B /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
+		DC8559EF2783141100C99B5B /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
+		DC8559F22783472800C99B5B /* PostAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddViewController.swift; sourceTree = "<group>"; };
 		DCA680D727802C13001E7598 /* SeSAC_FARM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSAC_FARM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA680DA27802C13001E7598 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCA680DC27802C13001E7598 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -71,6 +77,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DC8559EA278313EE00C99B5B /* PostDetail */ = {
+			isa = PBXGroup;
+			children = (
+				DC8559EB278313FE00C99B5B /* PostDetailViewController.swift */,
+				DC8559EF2783141100C99B5B /* PostDetailViewModel.swift */,
+			);
+			path = PostDetail;
+			sourceTree = "<group>";
+		};
+		DC8559F12783471500C99B5B /* PostAdd */ = {
+			isa = PBXGroup;
+			children = (
+				DC8559F22783472800C99B5B /* PostAddViewController.swift */,
+			);
+			path = PostAdd;
+			sourceTree = "<group>";
+		};
 		DCA680CE27802C13001E7598 = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +113,8 @@
 		DCA680D927802C13001E7598 /* SeSAC_FARM */ = {
 			isa = PBXGroup;
 			children = (
+				DC8559F12783471500C99B5B /* PostAdd */,
+				DC8559EA278313EE00C99B5B /* PostDetail */,
 				DCA6810E2781E8B0001E7598 /* Post */,
 				DCA680F027802C71001E7598 /* SignIn */,
 				DCA680EF27802C60001E7598 /* SignUp */,
@@ -226,6 +251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCA681092781E055001E7598 /* SignInViewController.swift in Sources */,
+				DC8559EC278313FE00C99B5B /* PostDetailViewController.swift in Sources */,
 				DCA680DF27802C13001E7598 /* ViewController.swift in Sources */,
 				DCA680FB27807375001E7598 /* APIService.swift in Sources */,
 				DCA681102781E8BD001E7598 /* PostViewController.swift in Sources */,
@@ -240,8 +266,10 @@
 				DCA6810B2781E05E001E7598 /* SignInView.swift in Sources */,
 				DCA680DB27802C13001E7598 /* AppDelegate.swift in Sources */,
 				DCA680FF2780763D001E7598 /* User.swift in Sources */,
+				DC8559F02783141100C99B5B /* PostDetailViewModel.swift in Sources */,
 				DCA680DD27802C13001E7598 /* SceneDelegate.swift in Sources */,
 				DCA680F927806722001E7598 /* Observable.swift in Sources */,
+				DC8559F32783472800C99B5B /* PostAddViewController.swift in Sources */,
 				DCA681122781E8C2001E7598 /* PostView.swift in Sources */,
 				DCA680F72780613D001E7598 /* SignUpViewController.swift in Sources */,
 				DCA681142781E8CA001E7598 /* PostViewModel.swift in Sources */,

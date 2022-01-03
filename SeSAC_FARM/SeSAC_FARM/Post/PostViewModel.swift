@@ -9,4 +9,6 @@ import Foundation
 
 class PostViewModel {
     
+    var selectedIndex: Observable<[Int]> = Observable([-1, -1])
+    
 }
