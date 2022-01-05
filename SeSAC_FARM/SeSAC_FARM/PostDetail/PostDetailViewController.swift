@@ -79,6 +79,21 @@ class PostDetailViewController: UIViewController {
         return textView
     }()
     
+    var inputCommentTextField: UITextField = {
+        let textField = UITextField()
+        
+        //textField.placeholder = "   댓글을 입력해주세요"
+        textField.attributedPlaceholder = NSAttributedString(string: "  댓글을 입력해주세요", attributes: [NSAttributedString.Key.foregroundColor : UIColor.darkGray])
+        textField.textColor = .black
+        textField.textAlignment = .left
+        textField.font = .systemFont(ofSize: 12, weight: .medium)
+        textField.backgroundColor = UIColor(cgColor: CGColor(red: 242/255, green: 243/255, blue: 245/255, alpha: 1))
+        textField.clipsToBounds = true
+        textField.layer.cornerRadius = 0.5 * 44
+        
+        return textField
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,6 +128,7 @@ class PostDetailViewController: UIViewController {
         
         //commentTableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
+        view.addSubview(inputCommentTextField)
         
     }
     
@@ -151,14 +167,22 @@ class PostDetailViewController: UIViewController {
             make.top.equalTo(profileImage.snp.bottom).offset(16)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            make.height.lessThanOrEqualTo(150)
+            make.height.greaterThanOrEqualTo(88)
         }
         
         commentTableView.snp.makeConstraints { make in
             make.top.equalTo(postContentTextView.snp.bottom).offset(16)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            //make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
+        }
+        
+        inputCommentTextField.snp.makeConstraints { make in
+            make.top.equalTo(commentTableView.snp.bottom).offset(4)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            make.height.equalTo(44)
         }
  
     }
@@ -182,9 +206,10 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
 //        cell.layoutIfNeeded()
 //    }
     
+        
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentTableViewCell.identifier) as? CommentTableViewCell else { return UITableViewCell()}
-        
+        cell.selectionStyle = .none
         //cell.nicknameLabel.text = "바미"
         cell.commentTextView.text = "안녕하세요!!!\n잘부탁드려요:)"
         

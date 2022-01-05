@@ -45,6 +45,16 @@ class CommentTableViewCell: UITableViewCell {
         return textView
     }()
     
+    lazy var commentButton: UIButton = {
+        let button = UIButton()
+        
+        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        button.tintColor = UIColor(cgColor: CGColor(red: 145/255, green: 145/255, blue: 145/255, alpha: 1))
+        
+        return button
+    }()
+    
+
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -58,12 +68,20 @@ class CommentTableViewCell: UITableViewCell {
     
     func setUp() {
         
+        addSubview(commentButton)
         addSubview(nicknameLabel)
         addSubview(commentTextView)
         
     }
     
     func setConstraints() {
+        
+        commentButton.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide).offset(4)
+            make.trailing.equalToSuperview().offset(-16)
+            make.width.equalTo(33)
+            make.height.equalTo(nicknameLabel.snp.height)
+        }
         
         nicknameLabel.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).offset(4)
@@ -76,7 +94,6 @@ class CommentTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
             make.bottom.equalTo(safeAreaLayoutGuide).offset(-4)
-            //make.height.greaterThanOrEqualTo(88)
         }
         
     }

@@ -43,6 +43,31 @@ class SignInViewController: UIViewController {
         
         viewModel.signIn {
             print("complete!")
+            
+            guard let token = UserDefaults.standard.string(forKey: "token") else{
+                //로그인에 실패했으면, userdefaults의 token 값을 nil로 만들어줬다.
+                //로그인에 실패했다는 alert를 띄워주자
+                
+                //1. UIAlertController 생성: 밑바탕 + 타이틀 + 본문
+                //let alert = UIAlertController(title: "타이틀 테스트", message: "메시지가 입력되었습니다.", preferredStyle: .alert)
+                let alert = UIAlertController(title: "로그인 실패", message: "아이디 또는 패스워드를 확인해주세요.", preferredStyle: .alert)
+                
+                //2. UIAlertAction 생성: 버튼들을...
+                let ok = UIAlertAction(title: "확인", style: .default)
+
+                //3. 1 + 2
+                alert.addAction(ok)
+                
+                //4. present
+                self.present(alert, animated: true, completion: nil)
+
+                
+                return
+            }
+            
+            //로그인 성공
+            print(UserDefaults.standard.string(forKey: "token"))
+            
         }
     }
     
