@@ -25,6 +25,15 @@ class SignUpViewModel {
                 print(usererror.message[0].messages[0].message)
             }
             
+            
+            //로그인 했으면, 토큰을 userdefault에 저장해야함!!
+            if let data = data {
+                print(data.jwt)
+                UserDefaults.standard.set(data.jwt, forKey: "token")
+            } else {
+                UserDefaults.standard.set(nil, forKey: "token")
+            }
+            
             completion()
         }
     }

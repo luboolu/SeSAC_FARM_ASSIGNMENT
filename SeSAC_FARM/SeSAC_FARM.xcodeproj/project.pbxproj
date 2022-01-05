@@ -12,6 +12,7 @@
 		DC8559F32783472800C99B5B /* PostAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559F22783472800C99B5B /* PostAddViewController.swift */; };
 		DC855A022785A1BF00C99B5B /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC855A012785A1BF00C99B5B /* CommentTableViewCell.swift */; };
 		DC855A052785E42D00C99B5B /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DC855A042785E42D00C99B5B /* IQKeyboardManagerSwift */; };
+		DC855A072785F91F00C99B5B /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC855A062785F91F00C99B5B /* Post.swift */; };
 		DCA680DB27802C13001E7598 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA680DA27802C13001E7598 /* AppDelegate.swift */; };
 		DCA680DD27802C13001E7598 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA680DC27802C13001E7598 /* SceneDelegate.swift */; };
 		DCA680DF27802C13001E7598 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA680DE27802C13001E7598 /* ViewController.swift */; };
@@ -42,6 +43,7 @@
 		DC8559EF2783141100C99B5B /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		DC8559F22783472800C99B5B /* PostAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddViewController.swift; sourceTree = "<group>"; };
 		DC855A012785A1BF00C99B5B /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		DC855A062785F91F00C99B5B /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		DCA680D727802C13001E7598 /* SeSAC_FARM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSAC_FARM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA680DA27802C13001E7598 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCA680DC27802C13001E7598 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				DCA680FA27807375001E7598 /* APIService.swift */,
 				DCA680FC2780752D001E7598 /* Endpoint.swift */,
 				DCA680FE2780763D001E7598 /* User.swift */,
+				DC855A062785F91F00C99B5B /* Post.swift */,
 				DCA68102278092AC001E7598 /* UserError.swift */,
 				DCA680DC27802C13001E7598 /* SceneDelegate.swift */,
 				DCA680DE27802C13001E7598 /* ViewController.swift */,
@@ -266,6 +269,7 @@
 				DCA681162781ECA2001E7598 /* PostTableViewCell.swift in Sources */,
 				DCA6810D2781E066001E7598 /* SignInViewModel.swift in Sources */,
 				DCA68103278092AC001E7598 /* UserError.swift in Sources */,
+				DC855A072785F91F00C99B5B /* Post.swift in Sources */,
 				DCA681052780B150001E7598 /* SignUpView.swift in Sources */,
 				DCA681072780B30F001E7598 /* StartView.swift in Sources */,
 				DCA680FD2780752D001E7598 /* Endpoint.swift in Sources */,

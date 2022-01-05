@@ -48,6 +48,10 @@ class PostViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
         setupView()
         setupConstraints()
+        
+        viewModel.getPost {
+            print("get post complete!")
+        }
     }
     
     func setupView() {
@@ -126,8 +130,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        viewModel.selectedIndex.value = [indexPath.section, indexPath.row]
-        
+
         let vc = PostDetailViewController()
         self.navigationController?.pushViewController(vc, animated: true)
         

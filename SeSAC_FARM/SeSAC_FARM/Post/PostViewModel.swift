@@ -9,6 +9,24 @@ import Foundation
 
 class PostViewModel {
     
-    var selectedIndex: Observable<[Int]> = Observable([-1, -1])
     
+    func getPost(completion: @escaping () -> Void) {
+        
+        print("get post api start")
+        
+        //http://test.monocoding.com:1231/posts
+        //Header - Authorization : Bearer + jwt
+        guard let token = UserDefaults.standard.string(forKey: "token") else {
+            completion()
+            return
+        }
+        
+        APIService.getPost(token: token) { post, apierror, usererror in
+            print(post)
+        }
+        
+        completion()
+        
+        
+    }
 }
