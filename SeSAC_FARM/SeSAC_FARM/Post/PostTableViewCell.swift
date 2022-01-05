@@ -14,12 +14,6 @@ class PostTableViewCell: UITableViewCell {
     
     static let identifier = "PostTableViewCell"
     
-    lazy var postTableView: UITableView = {
-        let tableView = UITableView()
-        
-        return tableView
-    }()
-    
     lazy var nicknameLabel: UILabel = {
         let label = UILabel()
         
@@ -120,11 +114,3 @@ class PostTableViewCell: UITableViewCell {
     }
 
 }
-
-//extension PostTableViewCell {
-//    public func bind(model: PostTableViewCellModel) {
-//        nicknameLabel.text = model.nickname.text
-//        contentTextView.text = model.content.text
-//        dateLabel.text = model.date.text
-//    }
-//}

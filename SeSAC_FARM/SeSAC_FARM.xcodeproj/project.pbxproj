@@ -10,6 +10,7 @@
 		DC8559EC278313FE00C99B5B /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559EB278313FE00C99B5B /* PostDetailViewController.swift */; };
 		DC8559F02783141100C99B5B /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559EF2783141100C99B5B /* PostDetailViewModel.swift */; };
 		DC8559F32783472800C99B5B /* PostAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559F22783472800C99B5B /* PostAddViewController.swift */; };
+		DC855A022785A1BF00C99B5B /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC855A012785A1BF00C99B5B /* CommentTableViewCell.swift */; };
 		DCA680DB27802C13001E7598 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA680DA27802C13001E7598 /* AppDelegate.swift */; };
 		DCA680DD27802C13001E7598 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA680DC27802C13001E7598 /* SceneDelegate.swift */; };
 		DCA680DF27802C13001E7598 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA680DE27802C13001E7598 /* ViewController.swift */; };
@@ -39,6 +40,7 @@
 		DC8559EB278313FE00C99B5B /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
 		DC8559EF2783141100C99B5B /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		DC8559F22783472800C99B5B /* PostAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddViewController.swift; sourceTree = "<group>"; };
+		DC855A012785A1BF00C99B5B /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		DCA680D727802C13001E7598 /* SeSAC_FARM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSAC_FARM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA680DA27802C13001E7598 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCA680DC27802C13001E7598 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 			children = (
 				DC8559EB278313FE00C99B5B /* PostDetailViewController.swift */,
 				DC8559EF2783141100C99B5B /* PostDetailViewModel.swift */,
+				DC855A012785A1BF00C99B5B /* CommentTableViewCell.swift */,
 			);
 			path = PostDetail;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				DC8559F02783141100C99B5B /* PostDetailViewModel.swift in Sources */,
 				DCA680DD27802C13001E7598 /* SceneDelegate.swift in Sources */,
 				DCA680F927806722001E7598 /* Observable.swift in Sources */,
+				DC855A022785A1BF00C99B5B /* CommentTableViewCell.swift in Sources */,
 				DC8559F32783472800C99B5B /* PostAddViewController.swift in Sources */,
 				DCA681122781E8C2001E7598 /* PostView.swift in Sources */,
 				DCA680F72780613D001E7598 /* SignUpViewController.swift in Sources */,

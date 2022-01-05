@@ -15,6 +15,9 @@ class PostDetailViewController: UIViewController {
     var commentTableView: UITableView = {
         let tableView = UITableView()
         
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 88
+        
         return tableView
     }()
     
@@ -62,17 +65,18 @@ class PostDetailViewController: UIViewController {
         return stackView
     }()
     
-    var profileStackView2: UIStackView = {
-        let stackView = UIStackView()
+    var postContentTextView: UITextView = {
+        let textView = UITextView()
         
-        stackView.axis = .horizontal
-        stackView.spacing = 4
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = .clear
-        stackView.alignment = .fill
-        stackView.distribution = .fillProportionally
-        
-        return stackView
+        textView.backgroundColor = .lightGray
+        textView.text = "새싹농장 가입인사 드려요!!!"
+        textView.isEditable = false
+        textView.isScrollEnabled = false
+        textView.textColor = .black
+        textView.textAlignment = .left
+        textView.font = .systemFont(ofSize: 15, weight: .medium)
+       
+        return textView
     }()
     
     
@@ -89,44 +93,107 @@ class PostDetailViewController: UIViewController {
     func setupView() {
         view.backgroundColor = .white
         
-        view.addSubview(profileImage)
+        profileImage.backgroundColor = .red
+        nicknameLabel.backgroundColor = .yellow
+        dateLabel.backgroundColor = .orange
         
+        view.addSubview(profileImage)
+
         profileStackView1.addSubview(nicknameLabel)
         profileStackView1.addSubview(dateLabel)
         
-        profileStackView2.addSubview(profileImage)
-        profileStackView2.addSubview(profileStackView1)
+        view.addSubview(profileStackView1)
+        view.addSubview(postContentTextView)
+        
+        //댓글 테이블뷰
+        view.addSubview(commentTableView)
+        commentTableView.register(CommentTableViewCell.self, forCellReuseIdentifier: CommentTableViewCell.identifier)
+        commentTableView.delegate = self
+        commentTableView.dataSource = self
+        
+        //commentTableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        
     }
     
     func setupConstraints() {
         
         profileImage.snp.makeConstraints { make in
-            make.width.equalTo(33)
-            make.height.equalTo(33)
+
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(4)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.width.equalTo(40)
+            make.height.equalTo(40)
         }
         
         nicknameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.top.equalTo(profileStackView1.snp.top)
+            make.leading.equalTo(profileStackView1.snp.leading)
+            make.trailing.equalTo(profileStackView1.snp.trailing)
             make.height.equalTo(20)
         }
         
         dateLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.top.equalTo(nicknameLabel.snp.bottom)
+            make.leading.equalTo(profileStackView1.snp.leading)
+            make.trailing.equalTo(profileStackView1.snp.trailing)
             make.height.equalTo(20)
         }
         
-        profileStackView2.snp.makeConstraints { make in
+        profileStackView1.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(4)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.leading.equalTo(profileImage.snp.trailing).offset(8)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            
         }
         
-
+        postContentTextView.snp.makeConstraints { make in
+            make.top.equalTo(profileImage.snp.bottom).offset(16)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.height.lessThanOrEqualTo(150)
+        }
         
+        commentTableView.snp.makeConstraints { make in
+            make.top.equalTo(postContentTextView.snp.bottom).offset(16)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
+        }
+ 
     }
+}
+
+extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 20
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+//
+//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return UITableView.automaticDimension
+//    }
+//
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        cell.layoutIfNeeded()
+//    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentTableViewCell.identifier) as? CommentTableViewCell else { return UITableViewCell()}
+        
+        //cell.nicknameLabel.text = "바미"
+        cell.commentTextView.text = "안녕하세요!!!\n잘부탁드려요:)"
+        
+        if indexPath.row == 2 {
+            cell.commentTextView.text = "안녕하세요!!!\n잘부탁드려요:)\n1\n2\n3\n4"
+        }
+        
+        return cell
+    }
+    
+    
 }
