@@ -85,7 +85,7 @@ class PostViewController: UIViewController {
         
         view.addSubview(titleLabel)
         
-        postTableView.backgroundColor = .orange
+        postTableView.backgroundColor = .white
         
         view.addSubview(postTableView)
         

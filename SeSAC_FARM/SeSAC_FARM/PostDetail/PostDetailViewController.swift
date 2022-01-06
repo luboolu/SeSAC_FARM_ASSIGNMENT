@@ -103,9 +103,11 @@ class PostDetailViewController: UIViewController {
     var commentUploadButton: UIButton = {
         let button = UIButton()
         
-        button.setTitle("등록", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .bold)
-        button.tintColor = UIColor(cgColor: CGColor(red: 145/255, green: 145/255, blue: 145/255, alpha: 1))
+        button.setImage(UIImage(systemName: "arrow.up.circle"), for: .normal)
+        button.backgroundColor = UIColor(cgColor: CGColor(red: 145/255, green: 145/255, blue: 145/255, alpha: 1))
+        button.tintColor = .white
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 0.5 * 44
         
         return button
         
@@ -223,8 +225,11 @@ class PostDetailViewController: UIViewController {
 
 //        commentStackView.addSubview(inputCommentTextField)
 //        commentStackView.addSubview(commentUploadButton)
-        view.addSubview(commentStackView)
+        //view.addSubview(commentStackView)
         view.addSubview(inputCommentTextField)
+        view.addSubview(commentUploadButton)
+        
+        commentUploadButton.addTarget(self, action: #selector(commentUploadButtonClicked), for: .touchUpInside)
         
     }
     
@@ -288,6 +293,7 @@ class PostDetailViewController: UIViewController {
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             make.height.equalTo(44)
+            make.width.equalTo(44)
         }
 
 
@@ -352,6 +358,10 @@ class PostDetailViewController: UIViewController {
             self.view.reloadInputViews()
             self.hud.dismiss(afterDelay: 0)
         }
+    }
+    
+    @objc func commentUploadButtonClicked() {
+        print(#function)
     }
     
 
