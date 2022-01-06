@@ -29,6 +29,10 @@ class PostDetailViewModel {
             APIService.getComments(token: token, postId: id) { comment, apierror, usererror in
                 
                 if let comment = comment {
+                    if comment.count > 0 {
+                        print(comment[0].comment)
+                    }
+                    
                     self.commentData = comment
                 }
                 

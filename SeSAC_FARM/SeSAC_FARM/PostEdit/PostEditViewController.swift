@@ -73,7 +73,10 @@ class PostEditViewController: UIViewController, ViewRepresentable {
                 self.hud.dismiss(animated: true)
             }
             
-            self.navigationController?.popViewController(animated: true)
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                self.navigationController?.popViewController(animated: true)
+            }
+
         }
         
 

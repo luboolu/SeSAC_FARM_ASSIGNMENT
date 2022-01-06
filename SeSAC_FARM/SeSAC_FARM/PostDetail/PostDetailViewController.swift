@@ -21,6 +21,7 @@ class PostDetailViewController: UIViewController {
     var commentTableView: UITableView = {
         let tableView = UITableView()
         
+        tableView.backgroundColor = .red
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 88
         
@@ -77,7 +78,7 @@ class PostDetailViewController: UIViewController {
         textView.backgroundColor = .white
         textView.text = "새싹농장 가입인사 드려요!!!"
         textView.isEditable = false
-        textView.isScrollEnabled = false
+        textView.isScrollEnabled = true
         textView.textColor = .black
         textView.textAlignment = .left
         textView.font = .systemFont(ofSize: 15, weight: .medium)
@@ -100,53 +101,75 @@ class PostDetailViewController: UIViewController {
         return textField
     }()
     
+    var commentUploadButton: UIButton = {
+        let button = UIButton()
+        
+        button.setTitle("등록", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .bold)
+        button.tintColor = UIColor(cgColor: CGColor(red: 145/255, green: 145/255, blue: 145/255, alpha: 1))
+        
+        return button
+        
+    }()
+    
+    var commentStackView: UIStackView = {
+        let stackView = UIStackView()
+        
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = .clear
+        stackView.alignment = .fill
+        stackView.distribution = .fillProportionally
+        
+        return stackView
+    }()
+    
     //UIMenu 사용하기
     var menuItems: [UIAction] {
-    return [
-    UIAction(title: "수정", image: UIImage(systemName: "pencil"), handler: { _ in
-        print("수정 clicked")
-        
-        if self.canEditable() {
-            print("수정할 수 있습니다")
+        return [
+        UIAction(title: "수정", image: UIImage(systemName: "pencil"), handler: { _ in
+            print("수정 clicked")
+            
+            if self.canEditable() {
+                print("수정할 수 있습니다")
 
-            //게시글 수정 화면으로 화면전환
-            let vc = PostEditViewController()
-            vc.postData = self.viewModel.postData
-            self.navigationController?.pushViewController(vc, animated: true)
-            
-        } else {
-            print("수정할 수 없습니다")
-            self.view.makeToast("본인의 게시글만 수정할 수 있습니다" ,duration: 2.0, position: .bottom, style: self.style)
-        }
-        
-    }),
-    UIAction(title: "삭제", image: UIImage(systemName: "trash"), attributes: .destructive, handler: { _ in
-        print("삭제 clicked")
-        
-        if self.canEditable() {
-            print("삭제할 수 있습니다")
-            
-            if let postId = self.viewModel.postData?.id {
-                self.viewModel.deletePost(id: postId) {
-                    
-                }
+                //게시글 수정 화면으로 화면전환
+                let vc = PostEditViewController()
+                vc.postData = self.viewModel.postData
+                self.navigationController?.pushViewController(vc, animated: true)
                 
-                self.navigationController?.popViewController(animated: true)
-                
+            } else {
+                print("수정할 수 없습니다")
+                self.view.makeToast("본인의 게시글만 수정할 수 있습니다" ,duration: 2.0, position: .bottom, style: self.style)
             }
             
-
+        }),
+        UIAction(title: "삭제", image: UIImage(systemName: "trash"), attributes: .destructive, handler: { _ in
+            print("삭제 clicked")
             
-        } else {
-            print("삭제할 수 없습니다")
-            self.view.makeToast("본인의 게시글만 삭제할 수 있습니다" ,duration: 2.0, position: .bottom, style: self.style)
-        }
-    })
-        ]
+            if self.canEditable() {
+                print("삭제할 수 있습니다")
+                
+                if let postId = self.viewModel.postData?.id {
+                    self.viewModel.deletePost(id: postId) {
+                        
+                    }
+                    
+                    self.navigationController?.popViewController(animated: true)
+                    
+                }
+
+            } else {
+                print("삭제할 수 없습니다")
+                self.view.makeToast("본인의 게시글만 삭제할 수 있습니다" ,duration: 2.0, position: .bottom, style: self.style)
+            }
+        })
+            ]
     }
 
     var menu: UIMenu {
-    return UIMenu(title: "", image: nil, identifier: nil, options: [], children: menuItems)
+        return UIMenu(title: "", image: nil, identifier: nil, options: [], children: menuItems)
     }
     
     
@@ -164,7 +187,7 @@ class PostDetailViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = editButton
         
         //데이터 로드
-        reloadPost(id: self.postId)
+        //reloadPost(id: self.postId)
         
         setupView()
         setupConstraints()
@@ -177,9 +200,7 @@ class PostDetailViewController: UIViewController {
         print("수정 후 리로드")
         
         reloadPost(id: self.postId)
-        
 
-        
     }
     
     func setupView() {
@@ -201,7 +222,10 @@ class PostDetailViewController: UIViewController {
         
         //commentTableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
-        view.addSubview(inputCommentTextField)
+//        commentStackView.addSubview(inputCommentTextField)
+//        commentStackView.addSubview(commentUploadButton)
+//        view.addSubview(commentStackView)
+//        view.addSubview(inputCommentTextField)
         
     }
     
@@ -247,16 +271,19 @@ class PostDetailViewController: UIViewController {
             make.top.equalTo(postContentTextView.snp.bottom).offset(16)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            //make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
         }
         
-        inputCommentTextField.snp.makeConstraints { make in
-            make.top.equalTo(commentTableView.snp.bottom).offset(4)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            make.height.equalTo(44)
-        }
+        
+//        inputCommentTextField.snp.makeConstraints { make in
+//            make.top.equalTo(commentTableView.snp.bottom).offset(4)
+//            make.leading.equalToSuperview().offset(16)
+//            make.trailing.equalToSuperview().offset(-16)
+//            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
+//            make.height.equalTo(44)
+//        }
+
+
  
     }
     
@@ -280,6 +307,9 @@ class PostDetailViewController: UIViewController {
         
         hud.show(in: self.view)
         viewModel.getComment(id: id) {
+            //print("댓글 데이터")
+            //print(self.viewModel.commentData)
+            self.commentTableView.reloadData()
             self.hud.dismiss(afterDelay: 0)
         }
         
@@ -295,13 +325,15 @@ class PostDetailViewController: UIViewController {
     }
     
     func reloadPost(id: Int) {
+        
+        
         hud.show(in: self.view)
         viewModel.reloadPost(id: id) {
             
 //            print("아이디!!!!!!!!11: \(self.postId)")
 //            print(self.viewModel.postData)
             if let postData = self.viewModel.postData {
-//                print(postData.text)
+                print(postData.text)
                 self.nicknameLabel.text = "\(postData.user.username)"
                 self.postContentTextView.text = "\(postData.text)"
                 self.dateLabel.text = "\(postData.createdAt)"
@@ -321,6 +353,7 @@ class PostDetailViewController: UIViewController {
 extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("\(self.viewModel.commentData?.count ?? 0)개의 테이블뷰 만들기")
         return self.viewModel.commentData?.count ?? 0
     }
 
@@ -330,13 +363,15 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
         
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentTableViewCell.identifier) as? CommentTableViewCell else { return UITableViewCell()}
+        print(#function)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentTableViewCell.identifier) as? CommentTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = .none
-        //cell.nicknameLabel.text = "바미"
+        cell.nicknameLabel.text = "바미"
         
         if let data = self.viewModel.commentData {
+            print("셀에 데이터 넣기")
             let row = data[indexPath.row]
-            
+            print(row.comment)
             cell.nicknameLabel.text = "\(row.user.username)"
             cell.commentTextView.text = "\(row.comment)"
 //            cell.nicknameLabel.text = "\(row.user.)"

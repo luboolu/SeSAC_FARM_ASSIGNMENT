@@ -394,7 +394,7 @@ class APIService {
   
     }
     
-    //게시글 수정
+    //게시글 새로고침
     static func reloadPost(token: String, postId: Int, completion: @escaping (PostElement?, APIError?, UserError?) -> (Void)) {
         
         let url = URL(string: "\(URL.uploadPost)/\(postId)")!
