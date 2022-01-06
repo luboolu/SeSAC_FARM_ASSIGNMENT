@@ -223,8 +223,8 @@ class PostDetailViewController: UIViewController {
 
 //        commentStackView.addSubview(inputCommentTextField)
 //        commentStackView.addSubview(commentUploadButton)
-//        view.addSubview(commentStackView)
-//        view.addSubview(inputCommentTextField)
+        view.addSubview(commentStackView)
+        view.addSubview(inputCommentTextField)
         
     }
     
@@ -271,17 +271,24 @@ class PostDetailViewController: UIViewController {
             make.top.equalTo(postContentTextView.snp.bottom).offset(16)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            //make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
         }
         
         
-//        inputCommentTextField.snp.makeConstraints { make in
-//            make.top.equalTo(commentTableView.snp.bottom).offset(4)
-//            make.leading.equalToSuperview().offset(16)
-//            make.trailing.equalToSuperview().offset(-16)
-//            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
-//            make.height.equalTo(44)
-//        }
+        inputCommentTextField.snp.makeConstraints { make in
+            make.top.equalTo(commentTableView.snp.bottom).offset(4)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            make.height.equalTo(44)
+        }
+        
+        commentUploadButton.snp.makeConstraints { make in
+            make.top.equalTo(commentTableView.snp.bottom).offset(4)
+            make.leading.equalTo(inputCommentTextField.snp.trailing).offset(4)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            make.height.equalTo(44)
+        }
 
 
  
