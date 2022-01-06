@@ -7,8 +7,11 @@
 
 import UIKit
 import SnapKit
+import JGProgressHUD
 
 class PostViewController: UIViewController {
+    
+    let hud = JGProgressHUD()
     
     //let mainView = PostView()
     let viewModel = PostViewModel()
@@ -43,15 +46,43 @@ class PostViewController: UIViewController {
         return button
     }()
     
+    var resetButton: UIButton = {
+        let button = UIButton()
+        
+        button.setImage(UIImage(systemName: "arrow.counterclockwise"), for: .normal)
+
+        button.backgroundColor = UIColor(cgColor: CGColor(red: 242/255, green: 243/255, blue: 245/255, alpha: 1))
+        button.tintColor = .black
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 0.5 * 33
+        
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        hud.textLabel.text = "Loading"
+        
         self.navigationController?.isNavigationBarHidden = true
+        
         setupView()
         setupConstraints()
         
+
+        hud.show(in: self.view)
         viewModel.getPost {
             print("get post complete!")
+            self.postTableView.reloadData()
+            self.hud.dismiss(afterDelay: 0)
         }
+
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print(#function)
     }
     
     func setupView() {
@@ -70,6 +101,8 @@ class PostViewController: UIViewController {
         view.addSubview(postAddButton)
         postAddButton.addTarget(self, action: #selector(postAddButtonClicked), for: .touchUpInside)
         
+        view.addSubview(resetButton)
+        resetButton.addTarget(self, action: #selector(resetButtonClicked), for: .touchUpInside)
         
         
     }
@@ -95,12 +128,33 @@ class PostViewController: UIViewController {
             make.width.equalTo(55)
             make.height.equalTo(55)
         }
+        
+        resetButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(30)
+            make.bottom.equalToSuperview().offset(-50)
+            make.width.equalTo(33)
+            make.height.equalTo(33)
+        }
     }
     
     @objc func postAddButtonClicked() {
         print(#function)
         let vc = PostAddViewController()
         self.navigationController?.pushViewController(vc, animated: true)
+
+    }
+    
+    @objc func resetButtonClicked() {
+        print(#function)
+        //get post api 통신 다시 해서 tableview reload
+
+        hud.show(in: self.view)
+        viewModel.getPost {
+            print("get post complete!")
+            self.postTableView.reloadData()
+            self.hud.dismiss(afterDelay: 0)
+        }
+
     }
     
 }
@@ -109,7 +163,7 @@ class PostViewController: UIViewController {
 extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return self.viewModel.postData?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -121,9 +175,15 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         
-        cell.nicknameLabel.text = "  바미  "
-        cell.contentTextView.text = "새싹농장 가입인사 드려요 *^^*\n두번째줄\n3번째줄\n4번째줄\n5번째줄"
-        cell.dateLabel.text = "01/02"
+        if let data = self.viewModel.postData {
+            let row = data[indexPath.row]
+            print(row.user.username)
+            cell.nicknameLabel.text = "  \(row.user.username)  "
+            cell.contentTextView.text = "\(row.text)"
+            cell.dateLabel.text = "\(row.createdAt)"
+        }
+
+
 
         return cell
     }
@@ -132,7 +192,13 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
 
         let vc = PostDetailViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
+        
+        if let data = self.viewModel.postData {
+            vc.postData = data[indexPath.row]
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
+        
         
 
     }

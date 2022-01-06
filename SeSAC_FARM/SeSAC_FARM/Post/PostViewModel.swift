@@ -9,24 +9,31 @@ import Foundation
 
 class PostViewModel {
     
+    var postData: [PostElement]?
+    
     
     func getPost(completion: @escaping () -> Void) {
         
-        print("get post api start")
-        
-        //http://test.monocoding.com:1231/posts
-        //Header - Authorization : Bearer + jwt
-        guard let token = UserDefaults.standard.string(forKey: "token") else {
-            completion()
-            return
+        DispatchQueue.main.async {
+            print("get post api start")
+            
+            //http://test.monocoding.com:1231/posts
+            //Header - Authorization : Bearer + jwt
+            guard let token = UserDefaults.standard.string(forKey: "token") else {
+                completion()
+                return
+            }
+            
+            APIService.getPost(token: token) { post, apierror, usererror in
+                
+                if let post = post {
+                    self.postData = post
+                }
+                completion()
+            }
+            
         }
         
-        APIService.getPost(token: token) { post, apierror, usererror in
-            print(post)
-        }
-        
-        completion()
-        
-        
+
     }
 }

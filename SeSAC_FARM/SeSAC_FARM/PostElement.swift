@@ -7,8 +7,8 @@
 
 import Foundation
 
-// MARK: - Post
-struct Post: Codable {
+// MARK: - PostElement
+struct PostElement: Codable {
     let id: Int
     let text: String
     let user: PostUser
@@ -40,8 +40,10 @@ struct Comment: Codable {
 // MARK: - User
 struct PostUser: Codable {
     let id: Int
-    let username, email, provider: String
-    let confirmed, blocked: Bool
+    let username, email: String
+    let provider: Provider
+    let confirmed: Bool
+    let blocked: Bool?
     let role: Int
     let createdAt, updatedAt: String
 
@@ -51,3 +53,9 @@ struct PostUser: Codable {
         case updatedAt = "updated_at"
     }
 }
+
+enum Provider: String, Codable {
+    case local = "local"
+}
+
+typealias Post = [PostElement]

@@ -24,7 +24,7 @@ extension URL {
     }
     
     static var post: URL {
-        return makeEndPoint("/posts")
+        return makeEndPoint("/posts?_sort=created_at:desc")
     }
 }
 

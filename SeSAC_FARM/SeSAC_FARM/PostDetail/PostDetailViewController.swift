@@ -11,6 +11,7 @@ import SnapKit
 class PostDetailViewController: UIViewController {
     
     let viewModel = PostDetailViewModel()
+    var postData: PostElement?
     
     var commentTableView: UITableView = {
         let tableView = UITableView()
@@ -68,7 +69,7 @@ class PostDetailViewController: UIViewController {
     var postContentTextView: UITextView = {
         let textView = UITextView()
         
-        textView.backgroundColor = .lightGray
+        textView.backgroundColor = .white
         textView.text = "새싹농장 가입인사 드려요!!!"
         textView.isEditable = false
         textView.isScrollEnabled = false
@@ -103,14 +104,20 @@ class PostDetailViewController: UIViewController {
         
         setupView()
         setupConstraints()
+        
+
+        if let postData = self.postData {
+            nicknameLabel.text = "\(postData.user.username)"
+            postContentTextView.text = "\(postData.text)"
+            dateLabel.text = "\(postData.createdAt)"
+        }
+
+
+        
     }
     
     func setupView() {
         view.backgroundColor = .white
-        
-        profileImage.backgroundColor = .red
-        nicknameLabel.backgroundColor = .yellow
-        dateLabel.backgroundColor = .orange
         
         view.addSubview(profileImage)
 
@@ -191,31 +198,24 @@ class PostDetailViewController: UIViewController {
 extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return self.postData?.comments.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-//
-//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return UITableView.automaticDimension
-//    }
-//
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        cell.layoutIfNeeded()
-//    }
     
         
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentTableViewCell.identifier) as? CommentTableViewCell else { return UITableViewCell()}
         cell.selectionStyle = .none
         //cell.nicknameLabel.text = "바미"
-        cell.commentTextView.text = "안녕하세요!!!\n잘부탁드려요:)"
         
-        if indexPath.row == 2 {
-            cell.commentTextView.text = "안녕하세요!!!\n잘부탁드려요:)\n1\n2\n3\n4"
+        if let row = self.postData?.comments[indexPath.row] {
+            cell.nicknameLabel.text = "\(row.user.)"
+            cell.commentTextView.text = "\(row)"
         }
+        
         
         return cell
     }

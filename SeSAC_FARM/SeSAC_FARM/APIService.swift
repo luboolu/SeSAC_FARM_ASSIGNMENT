@@ -167,10 +167,12 @@ class APIService {
                 }
                 
                 do {
+                    print("디코딩 시작##")
                     let decoder = JSONDecoder()
                     let postData = try decoder.decode(Post.self, from: data)
                     completion(postData, nil, nil)
                 } catch {
+                    print("디코딩 실패")
                     completion(nil, .invalidData, nil)
                 }
             }

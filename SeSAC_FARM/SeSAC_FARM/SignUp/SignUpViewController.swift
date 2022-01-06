@@ -7,11 +7,13 @@
 
 import UIKit
 import SnapKit
+import JGProgressHUD
 
 class SignUpViewController: UIViewController {
     
     let mainView = SignUpView()
     let viewModel = SignUpViewModel()
+    let hud = JGProgressHUD()
     
     
     override func loadView() {
@@ -21,6 +23,7 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        hud.textLabel.text = "Loading"
         self.navigationItem.title = "새싹농장 가입하기"
     
         
@@ -57,8 +60,10 @@ class SignUpViewController: UIViewController {
     
     @objc func signUpButtonClicked() {
         print(#function)
+        hud.show(in: self.view)
         viewModel.signUp {
             print("completion")
+            self.hud.dismiss(afterDelay: 0)
             
             guard let token = UserDefaults.standard.string(forKey: "token") else{
                 //로그인에 실패했으면, userdefaults의 token 값을 nil로 만들어줬다.

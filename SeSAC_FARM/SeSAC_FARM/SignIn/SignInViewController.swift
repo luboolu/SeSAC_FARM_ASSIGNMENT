@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 class SignInViewController: UIViewController {
     
     let mainView = SignInView()
     let viewModel = SignInViewModel()
+    let hud = JGProgressHUD()
     
     override func loadView() {
         self.view = mainView
@@ -20,6 +22,7 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        hud.textLabel.text = "Loading"
         self.navigationItem.title = "새싹농장 로그인"
         
         mainView.identifierTextField.addTarget(self, action: #selector(identifierTextFieldDidChange(_:)), for: .editingChanged)
@@ -40,10 +43,10 @@ class SignInViewController: UIViewController {
     
     @objc func signInButtonClicked() {
         print(#function)
-        
+        hud.show(in: self.view)
         viewModel.signIn {
             print("complete!")
-            
+            self.hud.dismiss(afterDelay: 0)
             guard let token = UserDefaults.standard.string(forKey: "token") else{
                 //로그인에 실패했으면, userdefaults의 token 값을 nil로 만들어줬다.
                 //로그인에 실패했다는 alert를 띄워주자
