@@ -26,6 +26,14 @@ extension URL {
     static var post: URL {
         return makeEndPoint("/posts?_sort=created_at:desc")
     }
+    
+    static var comment: URL {
+        return makeEndPoint("/comments")
+    }
+    
+    static var uploadPost: URL {
+        return makeEndPoint("/posts")
+    }
 }
 
 

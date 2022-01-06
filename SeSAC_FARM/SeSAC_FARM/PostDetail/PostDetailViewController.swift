@@ -7,11 +7,13 @@
 
 import UIKit
 import SnapKit
+import JGProgressHUD
 
 class PostDetailViewController: UIViewController {
     
     let viewModel = PostDetailViewModel()
     var postData: PostElement?
+    let hud = JGProgressHUD()
     
     var commentTableView: UITableView = {
         let tableView = UITableView()
@@ -98,6 +100,9 @@ class PostDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        hud.textLabel.text = "Loading"
+        
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.tintColor = .black
         
@@ -110,6 +115,8 @@ class PostDetailViewController: UIViewController {
             nicknameLabel.text = "\(postData.user.username)"
             postContentTextView.text = "\(postData.text)"
             dateLabel.text = "\(postData.createdAt)"
+            
+            getCommentData(id: postData.id)
         }
 
 
@@ -193,12 +200,21 @@ class PostDetailViewController: UIViewController {
         }
  
     }
+    
+    func getCommentData(id: Int) {
+        hud.show(in: self.view)
+        viewModel.getComment(id: id) {
+            self.commentTableView.reloadData()
+            self.hud.dismiss(afterDelay: 0)
+        }
+        
+    }
 }
 
 extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.postData?.comments.count ?? 0
+        return self.viewModel.commentData?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -211,9 +227,13 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         //cell.nicknameLabel.text = "바미"
         
-        if let row = self.postData?.comments[indexPath.row] {
-            cell.nicknameLabel.text = "\(row.user.)"
-            cell.commentTextView.text = "\(row)"
+        if let data = self.viewModel.commentData {
+            let row = data[indexPath.row]
+            
+            cell.nicknameLabel.text = "\(row.user.username)"
+            cell.commentTextView.text = "\(row.comment)"
+//            cell.nicknameLabel.text = "\(row.user.)"
+//            cell.commentTextView.text = "\(row)"
         }
         
         

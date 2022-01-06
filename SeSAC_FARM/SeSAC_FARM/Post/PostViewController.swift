@@ -69,13 +69,7 @@ class PostViewController: UIViewController {
         setupView()
         setupConstraints()
         
-
-        hud.show(in: self.view)
-        viewModel.getPost {
-            print("get post complete!")
-            self.postTableView.reloadData()
-            self.hud.dismiss(afterDelay: 0)
-        }
+        getPost()
 
 
     }
@@ -83,6 +77,7 @@ class PostViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print(#function)
+        getPost()
     }
     
     func setupView() {
@@ -137,6 +132,15 @@ class PostViewController: UIViewController {
         }
     }
     
+    func getPost() {
+        hud.show(in: self.view)
+        viewModel.getPost {
+            print("get post complete!")
+            self.postTableView.reloadData()
+            self.hud.dismiss(afterDelay: 0)
+        }
+    }
+    
     @objc func postAddButtonClicked() {
         print(#function)
         let vc = PostAddViewController()
@@ -148,12 +152,7 @@ class PostViewController: UIViewController {
         print(#function)
         //get post api 통신 다시 해서 tableview reload
 
-        hud.show(in: self.view)
-        viewModel.getPost {
-            print("get post complete!")
-            self.postTableView.reloadData()
-            self.hud.dismiss(afterDelay: 0)
-        }
+        getPost()
 
     }
     
