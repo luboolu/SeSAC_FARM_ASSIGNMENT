@@ -21,7 +21,6 @@ class PostDetailViewController: UIViewController {
     var commentTableView: UITableView = {
         let tableView = UITableView()
         
-        tableView.backgroundColor = .red
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 88
         
@@ -78,7 +77,7 @@ class PostDetailViewController: UIViewController {
         textView.backgroundColor = .white
         textView.text = "새싹농장 가입인사 드려요!!!"
         textView.isEditable = false
-        textView.isScrollEnabled = true
+        textView.isScrollEnabled = false
         textView.textColor = .black
         textView.textAlignment = .left
         textView.font = .systemFont(ofSize: 15, weight: .medium)
@@ -265,6 +264,7 @@ class PostDetailViewController: UIViewController {
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
             make.height.greaterThanOrEqualTo(88)
+            make.height.lessThanOrEqualTo(300)
         }
         
         commentTableView.snp.makeConstraints { make in
