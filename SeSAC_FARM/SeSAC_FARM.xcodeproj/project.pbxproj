@@ -16,6 +16,10 @@
 		DC855A0C2786A1CF00C99B5B /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = DC855A0B2786A1CF00C99B5B /* JGProgressHUD */; };
 		DC855A0E2786B7F800C99B5B /* PostAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC855A0D2786B7F800C99B5B /* PostAddViewModel.swift */; };
 		DC855A102786B97200C99B5B /* UploadPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC855A0F2786B97200C99B5B /* UploadPost.swift */; };
+		DC855A132786D2F200C99B5B /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = DC855A122786D2F200C99B5B /* Toast */; };
+		DC855A152786D72800C99B5B /* Toast+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC855A142786D72800C99B5B /* Toast+Extension.swift */; };
+		DC855A182786DB4D00C99B5B /* PostEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC855A172786DB4D00C99B5B /* PostEditViewController.swift */; };
+		DC855A1A2786DC4800C99B5B /* PostEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC855A192786DC4800C99B5B /* PostEditViewModel.swift */; };
 		DCA680DB27802C13001E7598 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA680DA27802C13001E7598 /* AppDelegate.swift */; };
 		DCA680DD27802C13001E7598 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA680DC27802C13001E7598 /* SceneDelegate.swift */; };
 		DCA680DF27802C13001E7598 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA680DE27802C13001E7598 /* ViewController.swift */; };
@@ -49,6 +53,9 @@
 		DC855A062785F91F00C99B5B /* PostElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostElement.swift; sourceTree = "<group>"; };
 		DC855A0D2786B7F800C99B5B /* PostAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddViewModel.swift; sourceTree = "<group>"; };
 		DC855A0F2786B97200C99B5B /* UploadPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPost.swift; sourceTree = "<group>"; };
+		DC855A142786D72800C99B5B /* Toast+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Toast+Extension.swift"; sourceTree = "<group>"; };
+		DC855A172786DB4D00C99B5B /* PostEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditViewController.swift; sourceTree = "<group>"; };
+		DC855A192786DC4800C99B5B /* PostEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditViewModel.swift; sourceTree = "<group>"; };
 		DCA680D727802C13001E7598 /* SeSAC_FARM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSAC_FARM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA680DA27802C13001E7598 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCA680DC27802C13001E7598 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -80,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC855A132786D2F200C99B5B /* Toast in Frameworks */,
 				DCA680F527805177001E7598 /* SnapKit in Frameworks */,
 				DC855A0C2786A1CF00C99B5B /* JGProgressHUD in Frameworks */,
 				DC855A052785E42D00C99B5B /* IQKeyboardManagerSwift in Frameworks */,
@@ -108,6 +116,15 @@
 			path = PostAdd;
 			sourceTree = "<group>";
 		};
+		DC855A162786DB3900C99B5B /* PostEdit */ = {
+			isa = PBXGroup;
+			children = (
+				DC855A172786DB4D00C99B5B /* PostEditViewController.swift */,
+				DC855A192786DC4800C99B5B /* PostEditViewModel.swift */,
+			);
+			path = PostEdit;
+			sourceTree = "<group>";
+		};
 		DCA680CE27802C13001E7598 = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +144,7 @@
 		DCA680D927802C13001E7598 /* SeSAC_FARM */ = {
 			isa = PBXGroup;
 			children = (
+				DC855A162786DB3900C99B5B /* PostEdit */,
 				DC8559F12783471500C99B5B /* PostAdd */,
 				DC8559EA278313EE00C99B5B /* PostDetail */,
 				DCA6810E2781E8B0001E7598 /* Post */,
@@ -138,6 +156,7 @@
 				DCA680FC2780752D001E7598 /* Endpoint.swift */,
 				DCA680FE2780763D001E7598 /* User.swift */,
 				DC855A062785F91F00C99B5B /* PostElement.swift */,
+				DC855A142786D72800C99B5B /* Toast+Extension.swift */,
 				DC855A0F2786B97200C99B5B /* UploadPost.swift */,
 				DCA68102278092AC001E7598 /* UserError.swift */,
 				DCA680DC27802C13001E7598 /* SceneDelegate.swift */,
@@ -210,6 +229,7 @@
 				DCA680F427805177001E7598 /* SnapKit */,
 				DC855A042785E42D00C99B5B /* IQKeyboardManagerSwift */,
 				DC855A0B2786A1CF00C99B5B /* JGProgressHUD */,
+				DC855A122786D2F200C99B5B /* Toast */,
 			);
 			productName = SeSAC_FARM;
 			productReference = DCA680D727802C13001E7598 /* SeSAC_FARM.app */;
@@ -243,6 +263,7 @@
 				DCA680F327805177001E7598 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				DC855A032785E42D00C99B5B /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				DC855A0A2786A1CF00C99B5B /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
+				DC855A112786D2F200C99B5B /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 			);
 			productRefGroup = DCA680D827802C13001E7598 /* Products */;
 			projectDirPath = "";
@@ -281,8 +302,10 @@
 				DC855A102786B97200C99B5B /* UploadPost.swift in Sources */,
 				DCA68103278092AC001E7598 /* UserError.swift in Sources */,
 				DC855A072785F91F00C99B5B /* PostElement.swift in Sources */,
+				DC855A152786D72800C99B5B /* Toast+Extension.swift in Sources */,
 				DCA681052780B150001E7598 /* SignUpView.swift in Sources */,
 				DCA681072780B30F001E7598 /* StartView.swift in Sources */,
+				DC855A182786DB4D00C99B5B /* PostEditViewController.swift in Sources */,
 				DCA680FD2780752D001E7598 /* Endpoint.swift in Sources */,
 				DCA680F227805166001E7598 /* StartViewController.swift in Sources */,
 				DCA6810B2781E05E001E7598 /* SignInView.swift in Sources */,
@@ -294,6 +317,7 @@
 				DC855A022785A1BF00C99B5B /* CommentTableViewCell.swift in Sources */,
 				DC8559F32783472800C99B5B /* PostAddViewController.swift in Sources */,
 				DC855A0E2786B7F800C99B5B /* PostAddViewModel.swift in Sources */,
+				DC855A1A2786DC4800C99B5B /* PostEditViewModel.swift in Sources */,
 				DCA681122781E8C2001E7598 /* PostView.swift in Sources */,
 				DCA680F72780613D001E7598 /* SignUpViewController.swift in Sources */,
 				DCA681142781E8CA001E7598 /* PostViewModel.swift in Sources */,
@@ -524,6 +548,14 @@
 				kind = branch;
 			};
 		};
+		DC855A112786D2F200C99B5B /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		DCA680F327805177001E7598 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -544,6 +576,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DC855A0A2786A1CF00C99B5B /* XCRemoteSwiftPackageReference "JGProgressHUD" */;
 			productName = JGProgressHUD;
+		};
+		DC855A122786D2F200C99B5B /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC855A112786D2F200C99B5B /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
 		};
 		DCA680F427805177001E7598 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

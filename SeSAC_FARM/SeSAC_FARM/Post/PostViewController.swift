@@ -193,7 +193,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         let vc = PostDetailViewController()
         
         if let data = self.viewModel.postData {
-            vc.postData = data[indexPath.row]
+            vc.postId = data[indexPath.row].id
             self.navigationController?.pushViewController(vc, animated: true)
         }
         

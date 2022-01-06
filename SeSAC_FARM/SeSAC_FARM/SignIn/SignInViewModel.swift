@@ -25,8 +25,10 @@ class SignInViewModel {
             if let data = data {
                 print(data.jwt)
                 UserDefaults.standard.set(data.jwt, forKey: "token")
+                UserDefaults.standard.set(data.user.id, forKey: "userid")
             } else {
                 UserDefaults.standard.set(nil, forKey: "token")
+                UserDefaults.standard.set(nil, forKey: "userid")
             }
             
             

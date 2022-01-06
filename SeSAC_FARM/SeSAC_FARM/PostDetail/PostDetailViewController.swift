@@ -8,12 +8,15 @@
 import UIKit
 import SnapKit
 import JGProgressHUD
+import Toast
 
 class PostDetailViewController: UIViewController {
     
     let viewModel = PostDetailViewModel()
-    var postData: PostElement?
+    //var postData: PostElement?
+    var postId = -1
     let hud = JGProgressHUD()
+    let style = ToastStyle()
     
     var commentTableView: UITableView = {
         let tableView = UITableView()
@@ -97,6 +100,56 @@ class PostDetailViewController: UIViewController {
         return textField
     }()
     
+    //UIMenu 사용하기
+    var menuItems: [UIAction] {
+    return [
+    UIAction(title: "수정", image: UIImage(systemName: "pencil"), handler: { _ in
+        print("수정 clicked")
+        
+        if self.canEditable() {
+            print("수정할 수 있습니다")
+
+            //게시글 수정 화면으로 화면전환
+            let vc = PostEditViewController()
+            vc.postData = self.viewModel.postData
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+        } else {
+            print("수정할 수 없습니다")
+            self.view.makeToast("본인의 게시글만 수정할 수 있습니다" ,duration: 2.0, position: .bottom, style: self.style)
+        }
+        
+    }),
+    UIAction(title: "삭제", image: UIImage(systemName: "trash"), attributes: .destructive, handler: { _ in
+        print("삭제 clicked")
+        
+        if self.canEditable() {
+            print("삭제할 수 있습니다")
+            
+            if let postId = self.viewModel.postData?.id {
+                self.viewModel.deletePost(id: postId) {
+                    
+                }
+                
+                self.navigationController?.popViewController(animated: true)
+                
+            }
+            
+
+            
+        } else {
+            print("삭제할 수 없습니다")
+            self.view.makeToast("본인의 게시글만 삭제할 수 있습니다" ,duration: 2.0, position: .bottom, style: self.style)
+        }
+    })
+        ]
+    }
+
+    var menu: UIMenu {
+    return UIMenu(title: "", image: nil, identifier: nil, options: [], children: menuItems)
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,19 +159,25 @@ class PostDetailViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.tintColor = .black
         
+        let editButton = UIBarButtonItem(title: "", image: UIImage(systemName: "ellipsis"), primaryAction: nil, menu: menu)
+
+        self.navigationItem.rightBarButtonItem = editButton
+        
+        //데이터 로드
+        reloadPost(id: self.postId)
         
         setupView()
         setupConstraints()
         
 
-        if let postData = self.postData {
-            nicknameLabel.text = "\(postData.user.username)"
-            postContentTextView.text = "\(postData.text)"
-            dateLabel.text = "\(postData.createdAt)"
-            
-            getCommentData(id: postData.id)
-        }
-
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("수정 후 리로드")
+        
+        reloadPost(id: self.postId)
+        
 
         
     }
@@ -201,14 +260,62 @@ class PostDetailViewController: UIViewController {
  
     }
     
+    func canEditable() -> Bool {
+        //현재 포스트의 수정, 삭제 권한을 가지고 있는지 확인
+        print(#function)
+        //포스트의 user.id == user default의 user id이면 true 반환, 아니면 false 반환
+        let myId = UserDefaults.standard.integer(forKey: "userid")
+        let postUserId = self.viewModel.postData?.user.id ?? -1
+        
+        if myId == postUserId {
+            return true
+        } else {
+            return false
+        }
+        
+    }
+    
     func getCommentData(id: Int) {
+        //게시물 삭제에 성공하면 pop으로 화면전환
+        
+        hud.show(in: self.view)
+        viewModel.getComment(id: id) {
+            self.hud.dismiss(afterDelay: 0)
+        }
+        
+        
+    }
+    
+    func postDelete(id: Int) {
         hud.show(in: self.view)
         viewModel.getComment(id: id) {
             self.commentTableView.reloadData()
             self.hud.dismiss(afterDelay: 0)
         }
-        
     }
+    
+    func reloadPost(id: Int) {
+        hud.show(in: self.view)
+        viewModel.reloadPost(id: id) {
+            
+//            print("아이디!!!!!!!!11: \(self.postId)")
+//            print(self.viewModel.postData)
+            if let postData = self.viewModel.postData {
+//                print(postData.text)
+                self.nicknameLabel.text = "\(postData.user.username)"
+                self.postContentTextView.text = "\(postData.text)"
+                self.dateLabel.text = "\(postData.createdAt)"
+                
+                self.getCommentData(id: postData.id)
+            }
+            
+            
+            self.view.reloadInputViews()
+            self.hud.dismiss(afterDelay: 0)
+        }
+    }
+    
+
 }
 
 extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {

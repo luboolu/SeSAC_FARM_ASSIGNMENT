@@ -131,14 +131,14 @@ class APIService {
         
         request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        print(url)
-        print(token)
-        print(request)
+//        print(url)
+//        print(token)
+//        print(request)
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             DispatchQueue.main.async {
-                print(error)
-                print(response)
-                print(data)
+//                print(error)
+//                print(response)
+//                print(data)
                 guard error == nil else {
                     completion(nil, .failed, nil)
                     return
@@ -190,13 +190,13 @@ class APIService {
         request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        print(url)
+//        print(url)
 
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             DispatchQueue.main.async {
-                print(error)
-                print(response)
-                print(data)
+//                print(error)
+//                print(response)
+//                print(data)
                 guard error == nil else {
                     completion(nil, .failed, nil)
                     return
@@ -277,6 +277,165 @@ class APIService {
                 do {
                     let decoder = JSONDecoder()
                     let userData = try decoder.decode(UploadPost.self, from: data)
+                    completion(userData, nil, nil)
+                } catch {
+                    completion(nil, .invalidData, nil)
+                }
+            }
+        }).resume()
+  
+    }
+    
+    //게시글 삭제
+    static func deletePost(token: String, postId: Int, completion: @escaping (UploadPost?, APIError?, UserError?) -> (Void)) {
+        
+        let url = URL(string: "\(URL.uploadPost)/\(postId)")!
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "DELETE"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        //URLSession.request(.shared, endpoint: request, completion: completion)
+        
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+            DispatchQueue.main.async {
+
+                guard error == nil else {
+                    completion(nil, .failed, nil)
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(nil, .noData, nil)
+                    return
+                }
+                
+                guard let response = response as? HTTPURLResponse else {
+                    completion(nil, .invalidResponse, nil)
+                    return
+                }
+                
+                guard response.statusCode == 200 else {
+                    do {
+                        let decoder = JSONDecoder()
+                        let errorData = try decoder.decode(UserError.self, from: data)
+                        completion(nil, .invalidResponse, errorData)
+                        return
+                    } catch {
+                        completion(nil, .failed, nil)
+                        return
+                    }
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let userData = try decoder.decode(UploadPost.self, from: data)
+                    completion(userData, nil, nil)
+                } catch {
+                    completion(nil, .invalidData, nil)
+                }
+            }
+        }).resume()
+  
+    }
+    
+    //게시글 수정
+    static func editPost(token: String, postId: Int, text: String, completion: @escaping (UploadPost?, APIError?, UserError?) -> (Void)) {
+        
+        let url = URL(string: "\(URL.uploadPost)/\(postId)")!
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "PUT"
+        request.httpBody = "text=\(text)".data(using: .utf8, allowLossyConversion: false)
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        //URLSession.request(.shared, endpoint: request, completion: completion)
+        
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+            DispatchQueue.main.async {
+
+                guard error == nil else {
+                    completion(nil, .failed, nil)
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(nil, .noData, nil)
+                    return
+                }
+                
+                guard let response = response as? HTTPURLResponse else {
+                    completion(nil, .invalidResponse, nil)
+                    return
+                }
+                
+                guard response.statusCode == 200 else {
+                    do {
+                        let decoder = JSONDecoder()
+                        let errorData = try decoder.decode(UserError.self, from: data)
+                        completion(nil, .invalidResponse, errorData)
+                        return
+                    } catch {
+                        completion(nil, .failed, nil)
+                        return
+                    }
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let userData = try decoder.decode(UploadPost.self, from: data)
+                    completion(userData, nil, nil)
+                } catch {
+                    completion(nil, .invalidData, nil)
+                }
+            }
+        }).resume()
+  
+    }
+    
+    //게시글 수정
+    static func reloadPost(token: String, postId: Int, completion: @escaping (PostElement?, APIError?, UserError?) -> (Void)) {
+        
+        let url = URL(string: "\(URL.uploadPost)/\(postId)")!
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+            DispatchQueue.main.async {
+
+                guard error == nil else {
+                    completion(nil, .failed, nil)
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(nil, .noData, nil)
+                    return
+                }
+                
+                guard let response = response as? HTTPURLResponse else {
+                    completion(nil, .invalidResponse, nil)
+                    return
+                }
+                
+                guard response.statusCode == 200 else {
+                    do {
+                        let decoder = JSONDecoder()
+                        let errorData = try decoder.decode(UserError.self, from: data)
+                        completion(nil, .invalidResponse, errorData)
+                        return
+                    } catch {
+                        completion(nil, .failed, nil)
+                        return
+                    }
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let userData = try decoder.decode(PostElement.self, from: data)
                     completion(userData, nil, nil)
                 } catch {
                     completion(nil, .invalidData, nil)

@@ -1,18 +1,19 @@
 //
-//  PostAddViewController.swift
+//  PostEditViewController.swift
 //  SeSAC_FARM
 //
-//  Created by 김진영 on 2022/01/04.
+//  Created by 김진영 on 2022/01/06.
 //
 
 import UIKit
 import SnapKit
 import JGProgressHUD
 
-class PostAddViewController: UIViewController, ViewRepresentable {
+class PostEditViewController: UIViewController, ViewRepresentable {
 
     let hud = JGProgressHUD()
-    let viewModel = PostAddViewModel()
+    let viewModel = PostEditViewModel()
+    var postData: PostElement?
     
     var postTextView: UITextView = {
         let textView = UITextView()
@@ -36,7 +37,7 @@ class PostAddViewController: UIViewController, ViewRepresentable {
         
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.tintColor = .black
-        self.navigationItem.title = "새싹농장 글쓰기"
+        self.navigationItem.title = "게시글 수정"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(completeButtonClicked))
         
         
@@ -49,6 +50,8 @@ class PostAddViewController: UIViewController, ViewRepresentable {
         view.backgroundColor = .white
 
         view.addSubview(postTextView)
+        
+        postTextView.text = self.postData?.text ?? ""
     }
     
     func setupConstraints() {
@@ -65,11 +68,15 @@ class PostAddViewController: UIViewController, ViewRepresentable {
     func postUpload() {
         hud.show(in: self.view)
         
-        viewModel.uploadPost(text: postTextView.text) {
-            self.hud.dismiss(animated: true)
+        if let postId = self.postData?.id {
+            viewModel.postEdit(text: postTextView.text, id: postId) {
+                self.hud.dismiss(animated: true)
+            }
+            
+            self.navigationController?.popViewController(animated: true)
         }
         
-        self.navigationController?.popViewController(animated: true)
+
     }
     
     @objc func completeButtonClicked() {
