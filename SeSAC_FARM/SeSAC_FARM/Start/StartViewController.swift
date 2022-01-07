@@ -21,7 +21,6 @@ class StartViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        
         mainView.startButton.addTarget(self, action: #selector(startButtonClicked), for: .touchUpInside)
         mainView.loginButton.addTarget(self, action: #selector(loginButtonClicked), for: .touchUpInside)
     }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC03997227888A7100509BC4 /* PostCommentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC03997127888A7100509BC4 /* PostCommentError.swift */; };
 		DC8559EC278313FE00C99B5B /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559EB278313FE00C99B5B /* PostDetailViewController.swift */; };
 		DC8559F02783141100C99B5B /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559EF2783141100C99B5B /* PostDetailViewModel.swift */; };
 		DC8559F32783472800C99B5B /* PostAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559F22783472800C99B5B /* PostAddViewController.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DC03997127888A7100509BC4 /* PostCommentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentError.swift; sourceTree = "<group>"; };
 		DC8559EB278313FE00C99B5B /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
 		DC8559EF2783141100C99B5B /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		DC8559F22783472800C99B5B /* PostAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddViewController.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				DCA680FA27807375001E7598 /* APIService.swift */,
 				DCA680FC2780752D001E7598 /* Endpoint.swift */,
 				DCA680FE2780763D001E7598 /* User.swift */,
+				DC03997127888A7100509BC4 /* PostCommentError.swift */,
 				DC855A062785F91F00C99B5B /* PostElement.swift */,
 				DC855A142786D72800C99B5B /* Toast+Extension.swift */,
 				DC855A0F2786B97200C99B5B /* UploadPost.swift */,
@@ -301,6 +304,7 @@
 				DCA6810D2781E066001E7598 /* SignInViewModel.swift in Sources */,
 				DC855A102786B97200C99B5B /* UploadPost.swift in Sources */,
 				DCA68103278092AC001E7598 /* UserError.swift in Sources */,
+				DC03997227888A7100509BC4 /* PostCommentError.swift in Sources */,
 				DC855A072785F91F00C99B5B /* PostElement.swift in Sources */,
 				DC855A152786D72800C99B5B /* Toast+Extension.swift in Sources */,
 				DCA681052780B150001E7598 /* SignUpView.swift in Sources */,

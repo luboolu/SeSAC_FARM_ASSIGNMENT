@@ -85,6 +85,8 @@ class PostDetailViewController: UIViewController {
         return textView
     }()
     
+    var inputCommentView = UIView()
+    
     var inputCommentTextField: UITextField = {
         let textField = UITextField()
         
@@ -93,9 +95,7 @@ class PostDetailViewController: UIViewController {
         textField.textColor = .black
         textField.textAlignment = .left
         textField.font = .systemFont(ofSize: 12, weight: .medium)
-        textField.backgroundColor = UIColor(cgColor: CGColor(red: 242/255, green: 243/255, blue: 245/255, alpha: 1))
-        textField.clipsToBounds = true
-        textField.layer.cornerRadius = 0.5 * 44
+        textField.backgroundColor = .clear
         
         return textField
     }()
@@ -107,23 +107,10 @@ class PostDetailViewController: UIViewController {
         button.backgroundColor = UIColor(cgColor: CGColor(red: 145/255, green: 145/255, blue: 145/255, alpha: 1))
         button.tintColor = .white
         button.clipsToBounds = true
-        button.layer.cornerRadius = 0.5 * 44
+        button.layer.cornerRadius = 5
         
         return button
         
-    }()
-    
-    var commentStackView: UIStackView = {
-        let stackView = UIStackView()
-        
-        stackView.axis = .horizontal
-        stackView.spacing = 4
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = .clear
-        stackView.alignment = .fill
-        stackView.distribution = .fillProportionally
-        
-        return stackView
     }()
     
     //UIMenu 사용하기
@@ -226,7 +213,15 @@ class PostDetailViewController: UIViewController {
 //        commentStackView.addSubview(inputCommentTextField)
 //        commentStackView.addSubview(commentUploadButton)
         //view.addSubview(commentStackView)
-        view.addSubview(inputCommentTextField)
+        inputCommentView.addSubview(inputCommentTextField)
+        view.addSubview(inputCommentView)
+        
+        inputCommentView.backgroundColor = UIColor(cgColor: CGColor(red: 242/255, green: 243/255, blue: 245/255, alpha: 1))
+        inputCommentView.clipsToBounds = true
+        inputCommentView.layer.cornerRadius = 10
+        
+
+        
         view.addSubview(commentUploadButton)
         
         commentUploadButton.addTarget(self, action: #selector(commentUploadButtonClicked), for: .touchUpInside)
@@ -279,20 +274,26 @@ class PostDetailViewController: UIViewController {
             //make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
         }
         
-        
-        inputCommentTextField.snp.makeConstraints { make in
+        inputCommentView.snp.makeConstraints { make in
             make.top.equalTo(commentTableView.snp.bottom).offset(4)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             make.height.equalTo(44)
         }
         
+        inputCommentTextField.snp.makeConstraints { make in
+            make.top.equalTo(inputCommentView.snp.top).offset(4)
+            make.leading.equalTo(inputCommentView.snp.leading).offset(12)
+            make.trailing.equalTo(inputCommentView.snp.trailing).offset(-4)
+            make.bottom.equalTo(inputCommentView.snp.bottom).offset(-4)
+        }
+        
         commentUploadButton.snp.makeConstraints { make in
             make.top.equalTo(commentTableView.snp.bottom).offset(4)
-            make.leading.equalTo(inputCommentTextField.snp.trailing).offset(4)
+            make.leading.equalTo(inputCommentView.snp.trailing).offset(4)
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            make.height.equalTo(44)
+            make.height.equalTo(33)
             make.width.equalTo(44)
         }
 
@@ -362,6 +363,16 @@ class PostDetailViewController: UIViewController {
     
     @objc func commentUploadButtonClicked() {
         print(#function)
+        
+        hud.show(in: self.view)
+        let comment = inputCommentTextField.text! ?? ""
+        
+        viewModel.uploadComment(id: self.postId, text: comment) {
+            //self.getCommentData(id: self.postId)
+        }
+        
+        self.view.reloadInputViews()
+        self.hud.dismiss(afterDelay: 0)
     }
     
 

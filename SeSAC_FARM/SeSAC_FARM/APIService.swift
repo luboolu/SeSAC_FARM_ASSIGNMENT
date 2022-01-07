@@ -194,9 +194,7 @@ class APIService {
 
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             DispatchQueue.main.async {
-//                print(error)
-//                print(response)
-//                print(data)
+
                 guard error == nil else {
                     completion(nil, .failed, nil)
                     return
@@ -221,6 +219,65 @@ class APIService {
                     print("디코딩 시작##")
                     let decoder = JSONDecoder()
                     let commentData = try decoder.decode(PostComments.self, from: data)
+                    completion(commentData, nil, nil)
+                } catch {
+                    print("디코딩 실패")
+                    completion(nil, .invalidData, nil)
+                }
+            }
+        }).resume()
+  
+    }
+    
+    //댓글 업로드
+    static func postComments(token: String, postId: Int, comment: String, completion: @escaping (PostCommentElement?, APIError?, PostCommentError?) -> (Void)) {
+        
+        let url = URL(string: "\(URL.comment)")!
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "POST"
+        request.httpBody = "comment=\(comment)&post=\(postId)".data(using: .utf8, allowLossyConversion: false)
+ 
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+            DispatchQueue.main.async {
+                
+                guard error == nil else {
+                    completion(nil, .failed, nil)
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(nil, .noData, nil)
+                    return
+                }
+                
+                guard let response = response as? HTTPURLResponse else {
+                    completion(nil, .invalidResponse, nil)
+                    return
+                }
+                
+                guard response.statusCode == 200 else {
+                    do {
+                        let decoder = JSONDecoder()
+                        let errorData = try decoder.decode(PostCommentError.self, from: data)
+                        completion(nil, .invalidResponse, errorData)
+                        return
+                    } catch {
+                        completion(nil, .failed, nil)
+                        return
+                    }
+                }
+                
+                do {
+                    print("디코딩 시작##")
+                    let decoder = JSONDecoder()
+                    let commentData = try decoder.decode(PostCommentElement.self, from: data)
+                    print("디코딩 결과")
+                    print(commentData)
                     completion(commentData, nil, nil)
                 } catch {
                     print("디코딩 실패")
@@ -295,8 +352,6 @@ class APIService {
         request.httpMethod = "DELETE"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        //URLSession.request(.shared, endpoint: request, completion: completion)
-        
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             DispatchQueue.main.async {
 
@@ -350,8 +405,7 @@ class APIService {
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        //URLSession.request(.shared, endpoint: request, completion: completion)
-        
+
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             DispatchQueue.main.async {
 

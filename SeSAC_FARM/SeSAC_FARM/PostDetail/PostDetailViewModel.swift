@@ -12,10 +12,11 @@ class PostDetailViewModel {
     var commentData: [PostCommentElement]?
     var postData: PostElement?
     
+    //댓글 가져오기
     func getComment(id: Int, completion: @escaping () -> Void) {
         
         DispatchQueue.main.async {
-            print("get post api start")
+            print("get comment api start")
             
             //http://test.monocoding.com:1231/posts
             //Header - Authorization : Bearer + jwt
@@ -35,6 +36,35 @@ class PostDetailViewModel {
                     
                     self.commentData = comment
                 }
+                
+                completion()
+            }
+            
+        }
+        
+    }
+    
+    //댓글 업로드
+    func uploadComment(id: Int, text: String, completion: @escaping () -> Void) {
+        
+        DispatchQueue.main.async {
+            print("upload comment api start")
+            
+            //http://test.monocoding.com:1231/posts
+            //Header - Authorization : Bearer + jwt
+            //http://test.monocoding.com:1231/comments?post=468
+
+            guard let token = UserDefaults.standard.string(forKey: "token") else {
+                completion()
+                return
+            }
+            
+            
+            APIService.postComments(token: token, postId: id, comment: text) { comment, apierror, usererror in
+                
+                print(comment)
+                print(apierror)
+                print(usererror)
                 
                 completion()
             }
