@@ -368,7 +368,7 @@ class PostDetailViewController: UIViewController {
         let comment = inputCommentTextField.text! ?? ""
         
         viewModel.uploadComment(id: self.postId, text: comment) {
-            //self.getCommentData(id: self.postId)
+            self.getCommentData(id: self.postId)
         }
         
         self.view.reloadInputViews()
