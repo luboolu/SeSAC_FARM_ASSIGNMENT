@@ -9,15 +9,24 @@ import UIKit
 import SnapKit
 
 
-protocol TableViewCellDelegate {
+protocol CommentTableViewCellTextViewDelegate {
+    
     func updateTextViewHeight(_ cell: CommentTableViewCell,_ textView: UITextView)
+
+}
+
+protocol CommentTableViewCellDelegate: AnyObject {
+    
+    func categoryButtonTapped()
+    
 }
 
 class CommentTableViewCell: UITableViewCell {
     
     static let identifier = "CommentTableViewCell"
     
-    var delegate: TableViewCellDelegate?
+    var cellDelegate: CommentTableViewCellDelegate?
+    var textviewDelegate: CommentTableViewCellTextViewDelegate?
 
     
     lazy var nicknameLabel: UILabel = {
@@ -42,14 +51,18 @@ class CommentTableViewCell: UITableViewCell {
         textView.font = .systemFont(ofSize: 12, weight: .medium)
         textView.delegate = self
         
+        
+        
         return textView
     }()
     
     lazy var commentButton: UIButton = {
         let button = UIButton()
         
+        button.backgroundColor = .red
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         button.tintColor = UIColor(cgColor: CGColor(red: 145/255, green: 145/255, blue: 145/255, alpha: 1))
+        button.layer.zPosition = 999
         
         return button
     }()
@@ -60,6 +73,8 @@ class CommentTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUp()
         setConstraints()
+        
+        commentButton.addTarget(self, action: #selector(categoryClicked), for: .touchUpInside)
     }
 
     required init?(coder: NSCoder) {
@@ -68,9 +83,14 @@ class CommentTableViewCell: UITableViewCell {
     
     func setUp() {
         
-        addSubview(commentButton)
+        
+        
         addSubview(nicknameLabel)
         addSubview(commentTextView)
+        addSubview(commentButton)
+        
+        
+
         
     }
     
@@ -86,7 +106,7 @@ class CommentTableViewCell: UITableViewCell {
         nicknameLabel.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).offset(4)
             make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
+            make.trailing.equalTo(commentButton.snp.leading).offset(-16)
         }
         
         commentTextView.snp.makeConstraints { make in
@@ -98,13 +118,24 @@ class CommentTableViewCell: UITableViewCell {
         
     }
     
+    @objc func categoryClicked() {
+        
+        cellDelegate?.categoryButtonTapped()
+        print(#function)
+    }
+
+    
 }
 
 extension CommentTableViewCell: UITextViewDelegate {
 
     func textViewDidChange(_ textView: UITextView) {
-        if let delegate = delegate {
+        if let delegate = textviewDelegate {
             delegate.updateTextViewHeight(self, textView)
         }
     }
 }
+
+
+
+

@@ -347,7 +347,7 @@ class PostDetailViewController: UIViewController {
 //            print("아이디!!!!!!!!11: \(self.postId)")
 //            print(self.viewModel.postData)
             if let postData = self.viewModel.postData {
-                print(postData.text)
+
                 self.nicknameLabel.text = "\(postData.user.username)"
                 self.postContentTextView.text = "\(postData.text)"
                 self.dateLabel.text = "\(postData.createdAt)"
@@ -376,12 +376,13 @@ class PostDetailViewController: UIViewController {
     }
     
 
+    
+
 }
 
 extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("\(self.viewModel.commentData?.count ?? 0)개의 테이블뷰 만들기")
         return self.viewModel.commentData?.count ?? 0
     }
 
@@ -393,21 +394,32 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print(#function)
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentTableViewCell.identifier) as? CommentTableViewCell else { return UITableViewCell() }
-        cell.selectionStyle = .none
-        cell.nicknameLabel.text = "바미"
-        
+        //cell.selectionStyle = .none
+
         if let data = self.viewModel.commentData {
-            print("셀에 데이터 넣기")
             let row = data[indexPath.row]
-            print(row.comment)
+
             cell.nicknameLabel.text = "\(row.user.username)"
             cell.commentTextView.text = "\(row.comment)"
-//            cell.nicknameLabel.text = "\(row.user.)"
-//            cell.commentTextView.text = "\(row)"
+            cell.cellDelegate = self
+
         }
         
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
+}
+
+extension PostDetailViewController: CommentTableViewCellDelegate {
+    
+    func categoryButtonTapped() {
+        print(#function)
     }
     
     
