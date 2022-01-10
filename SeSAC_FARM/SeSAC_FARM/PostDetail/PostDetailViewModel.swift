@@ -73,6 +73,35 @@ class PostDetailViewModel {
         
     }
     
+    //댓글 삭제
+    func deleteComment(postId: Int, commentId: Int, completion: @escaping () -> Void) {
+        
+        DispatchQueue.main.async {
+            print("upload comment api start")
+            
+            //http://test.monocoding.com:1231/posts
+            //Header - Authorization : Bearer + jwt
+            //http://test.monocoding.com:1231/comments?post=468
+
+            guard let token = UserDefaults.standard.string(forKey: "token") else {
+                completion()
+                return
+            }
+            
+            
+            APIService.deleteComments(token: token, commentId: commentId, postId: postId) { comment, apierror, usererror in
+                
+                print(comment)
+                print(apierror)
+                print(usererror)
+                
+                completion()
+            }
+            
+        }
+        
+    }
+    
     func deletePost(id: Int, completion: @escaping () -> Void) {
         DispatchQueue.main.async {
             print("delete post api start")

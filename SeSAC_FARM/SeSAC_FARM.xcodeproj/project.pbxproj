@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		DC03997227888A7100509BC4 /* PostCommentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC03997127888A7100509BC4 /* PostCommentError.swift */; };
+		DC039997278C65EE00509BC4 /* CommentEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC039996278C65EE00509BC4 /* CommentEditViewController.swift */; };
+		DC039999278C65F900509BC4 /* CommentEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC039998278C65F900509BC4 /* CommentEditViewModel.swift */; };
 		DC8559EC278313FE00C99B5B /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559EB278313FE00C99B5B /* PostDetailViewController.swift */; };
 		DC8559F02783141100C99B5B /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559EF2783141100C99B5B /* PostDetailViewModel.swift */; };
 		DC8559F32783472800C99B5B /* PostAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559F22783472800C99B5B /* PostAddViewController.swift */; };
@@ -48,6 +50,8 @@
 
 /* Begin PBXFileReference section */
 		DC03997127888A7100509BC4 /* PostCommentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentError.swift; sourceTree = "<group>"; };
+		DC039996278C65EE00509BC4 /* CommentEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEditViewController.swift; sourceTree = "<group>"; };
+		DC039998278C65F900509BC4 /* CommentEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEditViewModel.swift; sourceTree = "<group>"; };
 		DC8559EB278313FE00C99B5B /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
 		DC8559EF2783141100C99B5B /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		DC8559F22783472800C99B5B /* PostAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +103,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DC039995278C46D400509BC4 /* CommentEdit */ = {
+			isa = PBXGroup;
+			children = (
+				DC039996278C65EE00509BC4 /* CommentEditViewController.swift */,
+				DC039998278C65F900509BC4 /* CommentEditViewModel.swift */,
+			);
+			path = CommentEdit;
+			sourceTree = "<group>";
+		};
 		DC8559EA278313EE00C99B5B /* PostDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +159,7 @@
 		DCA680D927802C13001E7598 /* SeSAC_FARM */ = {
 			isa = PBXGroup;
 			children = (
+				DC039995278C46D400509BC4 /* CommentEdit */,
 				DC855A162786DB3900C99B5B /* PostEdit */,
 				DC8559F12783471500C99B5B /* PostAdd */,
 				DC8559EA278313EE00C99B5B /* PostDetail */,
@@ -301,6 +315,7 @@
 				DCA681102781E8BD001E7598 /* PostViewController.swift in Sources */,
 				DCA6810127807FDB001E7598 /* SignUpViewModel.swift in Sources */,
 				DCA681162781ECA2001E7598 /* PostTableViewCell.swift in Sources */,
+				DC039999278C65F900509BC4 /* CommentEditViewModel.swift in Sources */,
 				DCA6810D2781E066001E7598 /* SignInViewModel.swift in Sources */,
 				DC855A102786B97200C99B5B /* UploadPost.swift in Sources */,
 				DCA68103278092AC001E7598 /* UserError.swift in Sources */,
@@ -312,6 +327,7 @@
 				DC855A182786DB4D00C99B5B /* PostEditViewController.swift in Sources */,
 				DCA680FD2780752D001E7598 /* Endpoint.swift in Sources */,
 				DCA680F227805166001E7598 /* StartViewController.swift in Sources */,
+				DC039997278C65EE00509BC4 /* CommentEditViewController.swift in Sources */,
 				DCA6810B2781E05E001E7598 /* SignInView.swift in Sources */,
 				DCA680DB27802C13001E7598 /* AppDelegate.swift in Sources */,
 				DCA680FF2780763D001E7598 /* User.swift in Sources */,

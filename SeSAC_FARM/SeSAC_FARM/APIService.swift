@@ -290,13 +290,72 @@ class APIService {
     }
     
     //댓글 삭제
-    static func deleteComments(token: String, commentId: Int, postId: Int, comment: String, completion: @escaping (PostCommentElement?, APIError?, PostCommentError?) -> (Void)) {
+    static func deleteComments(token: String, commentId: Int, postId: Int, completion: @escaping (PostCommentElement?, APIError?, PostCommentError?) -> (Void)) {
         
         let url = URL(string: "\(URL.comment)/\(commentId)")!
         var request = URLRequest(url: url)
         
         request.httpMethod = "DELETE"
         request.httpBody = "post=\(postId)".data(using: .utf8, allowLossyConversion: false)
+ 
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+            DispatchQueue.main.async {
+                
+                guard error == nil else {
+                    completion(nil, .failed, nil)
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(nil, .noData, nil)
+                    return
+                }
+                
+                guard let response = response as? HTTPURLResponse else {
+                    completion(nil, .invalidResponse, nil)
+                    return
+                }
+                
+                guard response.statusCode == 200 else {
+                    do {
+                        let decoder = JSONDecoder()
+                        let errorData = try decoder.decode(PostCommentError.self, from: data)
+                        completion(nil, .invalidResponse, errorData)
+                        return
+                    } catch {
+                        completion(nil, .failed, nil)
+                        return
+                    }
+                }
+                
+                do {
+                    print("디코딩 시작##")
+                    let decoder = JSONDecoder()
+                    let commentData = try decoder.decode(PostCommentElement.self, from: data)
+                    print("디코딩 결과")
+                    print(commentData)
+                    completion(commentData, nil, nil)
+                } catch {
+                    print("디코딩 실패")
+                    completion(nil, .invalidData, nil)
+                }
+            }
+        }).resume()
+  
+        
+    }
+    
+    //댓글 수정
+    static func editComments(token: String, commentId: Int, postId: Int, text: String, completion: @escaping (PostCommentElement?, APIError?, PostCommentError?) -> (Void)) {
+        
+        let url = URL(string: "\(URL.comment)/\(commentId)")!
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "PUT"
+        request.httpBody = "post=\(postId)&comment=\(text)".data(using: .utf8, allowLossyConversion: false)
  
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

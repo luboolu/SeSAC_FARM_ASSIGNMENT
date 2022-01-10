@@ -13,10 +13,11 @@ import Toast
 class PostDetailViewController: UIViewController {
     
     let viewModel = PostDetailViewModel()
-    //var postData: PostElement?
-    var postId = -1
     let hud = JGProgressHUD()
     let style = ToastStyle()
+    
+    var postId = -1
+    var selectedCommentID = -1
     
     var commentTableView: UITableView = {
         let tableView = UITableView()
@@ -113,13 +114,19 @@ class PostDetailViewController: UIViewController {
         
     }()
     
+    /******************************
+     
+     POST MENU SETTING
+     
+     ********************************************/
+    
     //UIMenu 사용하기
-    var menuItems: [UIAction] {
+    var postMenuItems: [UIAction] {
         return [
         UIAction(title: "수정", image: UIImage(systemName: "pencil"), handler: { _ in
             print("수정 clicked")
             
-            if self.canEditable() {
+            if self.canEditable(selectecId: self.viewModel.postData?.user.id ?? -1) {
                 print("수정할 수 있습니다")
 
                 //게시글 수정 화면으로 화면전환
@@ -136,7 +143,7 @@ class PostDetailViewController: UIViewController {
         UIAction(title: "삭제", image: UIImage(systemName: "trash"), attributes: .destructive, handler: { _ in
             print("삭제 clicked")
             
-            if self.canEditable() {
+            if self.canEditable(selectecId: self.viewModel.postData?.user.id ?? -1) {
                 print("삭제할 수 있습니다")
                 
                 if let postId = self.viewModel.postData?.id {
@@ -156,10 +163,9 @@ class PostDetailViewController: UIViewController {
             ]
     }
 
-    var menu: UIMenu {
-        return UIMenu(title: "", image: nil, identifier: nil, options: [], children: menuItems)
+    var postMenu: UIMenu {
+        return UIMenu(title: "", image: nil, identifier: nil, options: [], children: postMenuItems)
     }
-    
     
     
     override func viewDidLoad() {
@@ -170,7 +176,7 @@ class PostDetailViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.tintColor = .black
         
-        let editButton = UIBarButtonItem(title: "", image: UIImage(systemName: "ellipsis"), primaryAction: nil, menu: menu)
+        let editButton = UIBarButtonItem(title: "", image: UIImage(systemName: "ellipsis"), primaryAction: nil, menu: postMenu)
 
         self.navigationItem.rightBarButtonItem = editButton
         
@@ -190,6 +196,7 @@ class PostDetailViewController: UIViewController {
         reloadPost(id: self.postId)
 
     }
+    
     
     func setupView() {
         view.backgroundColor = .white
@@ -301,14 +308,14 @@ class PostDetailViewController: UIViewController {
  
     }
     
-    func canEditable() -> Bool {
+    func canEditable(selectecId: Int) -> Bool {
         //현재 포스트의 수정, 삭제 권한을 가지고 있는지 확인
         print(#function)
         //포스트의 user.id == user default의 user id이면 true 반환, 아니면 false 반환
         let myId = UserDefaults.standard.integer(forKey: "userid")
-        let postUserId = self.viewModel.postData?.user.id ?? -1
+        //let postUserId = self.viewModel.postData?.user.id ?? -1
         
-        if myId == postUserId {
+        if myId == selectecId {
             return true
         } else {
             return false
@@ -401,16 +408,81 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
 
             cell.nicknameLabel.text = "\(row.user.username)"
             cell.commentTextView.text = "\(row.comment)"
-            cell.cellDelegate = self
 
+            
+            let editing = UIAction(title: "수정", image: UIImage(systemName: "pencil")) { _ in
+                print("수정하기")
+                if self.canEditable(selectecId: self.viewModel.commentData?[indexPath.row].user.id ?? -1) {
+                    print("수정할 수 있습니다")
+
+                    //댓글 수정 화면으로 화면전환
+                    let vc = CommentEditViewController()
+                    vc.commentData = self.viewModel.commentData?[indexPath.row]
+                    self.navigationController?.pushViewController(vc, animated: true)
+                    
+                } else {
+                    print("수정할 수 없습니다")
+                    self.view.makeToast("본인의 댓글만 수정할 수 있습니다" ,duration: 2.0, position: .bottom, style: self.style)
+                }
+            }
+            
+            let deleting = UIAction(title: "삭제", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                print("삭제하기")
+                
+                if self.canEditable(selectecId: self.viewModel.commentData?[indexPath.row].user.id ?? -1) {
+                    print("삭제할 수 있습니다")
+                    
+                    if let postId = self.viewModel.postData?.id, let commentId = self.viewModel.commentData?[indexPath.row].id {
+                        self.viewModel.deleteComment(postId: postId, commentId: commentId) {
+                            print("삭제완료")
+                            self.getCommentData(id: postId)
+                        }
+                        
+                        self.view.reloadInputViews()
+                        }
+                    
+                    
+//                    if let postId = self.viewModel.postData?.id {
+//                        self.viewModel.deletePost(id: postId) {
+//
+//                        }
+//
+//                        self.navigationController?.popViewController(animated: true)
+//
+//                    }
+
+                } else {
+                    print("삭제할 수 없습니다")
+                    self.view.makeToast("본인의 댓글만 삭제할 수 있습니다" ,duration: 2.0, position: .bottom, style: self.style)
+                }
+            }
+            
+            let menu = UIMenu(title: "", image: nil, identifier: nil, options: [], children: [editing, deleting])
+            
+            cell.commentButton.menu = menu
+            cell.commentButton.showsMenuAsPrimaryAction = true
+            
+//            cell.commentButtonClicked = { [unowned self] in
+//                // 기능 구현 위치
+//                print("commentButtonClicked\(indexPath)")
+//
+//            }
+            
+
+                
+   
         }
         
         
         return cell
     }
     
+
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        
     }
     
     

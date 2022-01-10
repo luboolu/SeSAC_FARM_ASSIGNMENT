@@ -25,8 +25,9 @@ class CommentTableViewCell: UITableViewCell {
     
     static let identifier = "CommentTableViewCell"
     
-    var cellDelegate: CommentTableViewCellDelegate?
     var textviewDelegate: CommentTableViewCellTextViewDelegate?
+    
+    var commentButtonClicked : (() -> ())?
 
     
     lazy var nicknameLabel: UILabel = {
@@ -71,58 +72,67 @@ class CommentTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        
+        //commentButton.addTarget(self, action: #selector(categoryClicked), for: .touchUpInside)
+        commentButton.addTarget(self, action: #selector(commentClicked), for: .touchUpInside)
+        
+        
         setUp()
         setConstraints()
-        
-        commentButton.addTarget(self, action: #selector(categoryClicked), for: .touchUpInside)
+
+
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been impl")
     }
     
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    
     func setUp() {
         
-        
-        
-        addSubview(nicknameLabel)
-        addSubview(commentTextView)
-        addSubview(commentButton)
-        
-        
-
+        contentView.addSubview(nicknameLabel)
+        contentView.addSubview(commentTextView)
+        contentView.addSubview(commentButton)
         
     }
     
     func setConstraints() {
         
-        commentButton.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide).offset(4)
-            make.trailing.equalToSuperview().offset(-16)
-            make.width.equalTo(33)
-            make.height.equalTo(nicknameLabel.snp.height)
-        }
         
         nicknameLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide).offset(4)
-            make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(contentView.snp.top).offset(4)
+            make.leading.equalTo(contentView.snp.leading).offset(16)
             make.trailing.equalTo(commentButton.snp.leading).offset(-16)
         }
         
+        
+        commentButton.snp.makeConstraints { make in
+            make.top.equalTo(contentView.snp.top).offset(4)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-16)
+            make.bottom.equalTo(commentTextView.snp.top).offset(-4)
+            make.width.equalTo(33)
+        }
+
         commentTextView.snp.makeConstraints { make in
-            make.top.equalTo(nicknameLabel.snp.bottom).offset(0)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-            make.bottom.equalTo(safeAreaLayoutGuide).offset(-4)
+            make.top.equalTo(nicknameLabel.snp.bottom).offset(4)
+            make.leading.equalTo(contentView.snp.leading).offset(16)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-16)
+            make.bottom.equalTo(contentView.snp.bottom).offset(-4)
         }
         
     }
+
     
-    @objc func categoryClicked() {
+    @objc func commentClicked() {
+        commentButtonClicked?()
         
-        cellDelegate?.categoryButtonTapped()
-        print(#function)
     }
+
+
 
     
 }
