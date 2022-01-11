@@ -10,6 +10,7 @@
 		DC03997227888A7100509BC4 /* PostCommentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC03997127888A7100509BC4 /* PostCommentError.swift */; };
 		DC039997278C65EE00509BC4 /* CommentEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC039996278C65EE00509BC4 /* CommentEditViewController.swift */; };
 		DC039999278C65F900509BC4 /* CommentEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC039998278C65F900509BC4 /* CommentEditViewModel.swift */; };
+		DC03999B278C7EC600509BC4 /* URLSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC03999A278C7EC600509BC4 /* URLSession+Extension.swift */; };
 		DC8559EC278313FE00C99B5B /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559EB278313FE00C99B5B /* PostDetailViewController.swift */; };
 		DC8559F02783141100C99B5B /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559EF2783141100C99B5B /* PostDetailViewModel.swift */; };
 		DC8559F32783472800C99B5B /* PostAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8559F22783472800C99B5B /* PostAddViewController.swift */; };
@@ -52,6 +53,7 @@
 		DC03997127888A7100509BC4 /* PostCommentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentError.swift; sourceTree = "<group>"; };
 		DC039996278C65EE00509BC4 /* CommentEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEditViewController.swift; sourceTree = "<group>"; };
 		DC039998278C65F900509BC4 /* CommentEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEditViewModel.swift; sourceTree = "<group>"; };
+		DC03999A278C7EC600509BC4 /* URLSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Extension.swift"; sourceTree = "<group>"; };
 		DC8559EB278313FE00C99B5B /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
 		DC8559EF2783141100C99B5B /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		DC8559F22783472800C99B5B /* PostAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddViewController.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				DCA680FA27807375001E7598 /* APIService.swift */,
 				DCA680FC2780752D001E7598 /* Endpoint.swift */,
 				DCA680FE2780763D001E7598 /* User.swift */,
+				DC03999A278C7EC600509BC4 /* URLSession+Extension.swift */,
 				DC03997127888A7100509BC4 /* PostCommentError.swift */,
 				DC855A062785F91F00C99B5B /* PostElement.swift */,
 				DC855A142786D72800C99B5B /* Toast+Extension.swift */,
@@ -324,6 +327,7 @@
 				DC855A152786D72800C99B5B /* Toast+Extension.swift in Sources */,
 				DCA681052780B150001E7598 /* SignUpView.swift in Sources */,
 				DCA681072780B30F001E7598 /* StartView.swift in Sources */,
+				DC03999B278C7EC600509BC4 /* URLSession+Extension.swift in Sources */,
 				DC855A182786DB4D00C99B5B /* PostEditViewController.swift in Sources */,
 				DCA680FD2780752D001E7598 /* Endpoint.swift in Sources */,
 				DCA680F227805166001E7598 /* StartViewController.swift in Sources */,

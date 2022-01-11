@@ -26,6 +26,8 @@ class CommentViewModel {
             
             APIService.editComments(token: token, commentId: commentId, postId: postId, text: text){ comment, apierror, usererror in
                 
+                print(apierror)
+                print(usererror)
                 
                 completion()
             }

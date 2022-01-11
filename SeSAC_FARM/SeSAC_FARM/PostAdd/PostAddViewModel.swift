@@ -24,7 +24,7 @@ class PostAddViewModel {
             }
             
             APIService.uploadPost(token: token, text: text) { post, apierror, usererror in
-                print(post)
+
                 print(apierror)
                 print(usererror)
                 if let post = post {

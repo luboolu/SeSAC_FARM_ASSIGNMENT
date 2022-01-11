@@ -15,11 +15,7 @@ class SignInViewModel {
     func signIn(completion: @escaping () -> Void) {
         print("sign in api start")
         
-        APIService.signIn(identifier: identifier.value, password: password.value) { data, error, usererror in
-            
-            if let usererror = usererror {
-                print(usererror.message[0].messages[0].message)
-            }
+        APIService.signIn(identifier: identifier.value, password: password.value) { data, apierror, usererror in
             
             //로그인 했으면, 토큰을 userdefault에 저장해야함!!
             if let data = data {
@@ -31,6 +27,8 @@ class SignInViewModel {
                 UserDefaults.standard.set(nil, forKey: "userid")
             }
             
+            print(apierror)
+            print(usererror)
             
             
             completion()

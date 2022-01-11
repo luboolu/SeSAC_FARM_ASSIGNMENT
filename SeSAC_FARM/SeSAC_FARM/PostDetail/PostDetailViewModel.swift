@@ -30,12 +30,11 @@ class PostDetailViewModel {
             APIService.getComments(token: token, postId: id) { comment, apierror, usererror in
                 
                 if let comment = comment {
-                    if comment.count > 0 {
-                        print(comment[0].comment)
-                    }
-                    
                     self.commentData = comment
                 }
+                
+                print(apierror)
+                print(usererror)
                 
                 completion()
             }
@@ -62,10 +61,9 @@ class PostDetailViewModel {
             
             APIService.postComments(token: token, postId: id, comment: text) { comment, apierror, usererror in
                 
-                print(comment)
                 print(apierror)
                 print(usererror)
-                
+
                 completion()
             }
             
@@ -91,9 +89,9 @@ class PostDetailViewModel {
             
             APIService.deleteComments(token: token, commentId: commentId, postId: postId) { comment, apierror, usererror in
                 
-                print(comment)
                 print(apierror)
                 print(usererror)
+
                 
                 completion()
             }
@@ -116,6 +114,8 @@ class PostDetailViewModel {
             
             APIService.deletePost(token: token, postId: id) { post, apierror, usererror in
                 
+                print(apierror)
+                print(usererror)
 
                 completion()
             }
@@ -142,9 +142,10 @@ class PostDetailViewModel {
                 
                 if let post = post {
                     self.postData = post
-                    //print(post)
-
                 }
+                
+                print(apierror)
+                print(usererror)
                 
                 completion()
                 

@@ -25,6 +25,9 @@ class PostEditViewModel {
             
             APIService.editPost(token: token, postId: id, text: text) { post, apierror, usererror in
                 
+                print(apierror)
+                print(usererror)
+                
                 completion()
                 
             }

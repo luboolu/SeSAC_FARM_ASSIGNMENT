@@ -147,11 +147,16 @@ class PostDetailViewController: UIViewController {
                 print("삭제할 수 있습니다")
                 
                 if let postId = self.viewModel.postData?.id {
+                    self.hud.show(in: self.view)
+                    
                     self.viewModel.deletePost(id: postId) {
                         
                     }
                     
-                    self.navigationController?.popViewController(animated: true)
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                        self.hud.dismiss(afterDelay: 0)
+                        self.navigationController?.popViewController(animated: true)
+                    }
                     
                 }
 

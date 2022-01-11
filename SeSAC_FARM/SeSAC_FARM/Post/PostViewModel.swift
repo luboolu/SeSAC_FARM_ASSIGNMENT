@@ -29,6 +29,10 @@ class PostViewModel {
                 if let post = post {
                     self.postData = post
                 }
+                
+                print(apierror)
+                print(usererror)
+                
                 completion()
             }
             
