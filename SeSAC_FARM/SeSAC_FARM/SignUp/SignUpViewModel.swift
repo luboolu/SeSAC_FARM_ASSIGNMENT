@@ -13,6 +13,7 @@ class SignUpViewModel {
     var email: Observable<String> = Observable("")
     var password: Observable<String> = Observable("")
     var passwordConfirm: Observable<String> = Observable("")
+    var error: UserError?
     
     func signUp(completion: @escaping () -> Void) {
         print("sign up api start")
@@ -26,6 +27,7 @@ class SignUpViewModel {
                 UserDefaults.standard.set(data.jwt, forKey: "token")
                 UserDefaults.standard.set(data.user.id, forKey: "userid")
             } else {
+                self.error = usererror
                 UserDefaults.standard.set(nil, forKey: "token")
                 UserDefaults.standard.set(nil, forKey: "userid")
             }

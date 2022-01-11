@@ -12,7 +12,7 @@ class PostViewModel {
     var postData: [PostElement]?
     
     
-    func getPost(completion: @escaping () -> Void) {
+    func getPost(completion: @escaping (APIResult?) -> (Void)) {
         
         DispatchQueue.main.async {
             print("get post api start")
@@ -20,20 +20,20 @@ class PostViewModel {
             //http://test.monocoding.com:1231/posts
             //Header - Authorization : Bearer + jwt
             guard let token = UserDefaults.standard.string(forKey: "token") else {
-                completion()
+                completion(.unauthorized)
                 return
             }
             
-            APIService.getPost(token: token) { post, apierror, usererror in
+            APIService.getPost(token: token) { post, apiresult, usererror in
                 
                 if let post = post {
                     self.postData = post
                 }
                 
-                print(apierror)
+                print(apiresult)
                 print(usererror)
                 
-                completion()
+                completion(apiresult)
             }
             
         }

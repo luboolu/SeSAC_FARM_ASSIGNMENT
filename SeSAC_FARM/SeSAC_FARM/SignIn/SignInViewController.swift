@@ -45,9 +45,8 @@ class SignInViewController: UIViewController {
         print(#function)
         hud.show(in: self.view)
         viewModel.signIn {
-            print("complete!")
             self.hud.dismiss(afterDelay: 0)
-            guard let token = UserDefaults.standard.string(forKey: "token") else{
+            guard let token = UserDefaults.standard.string(forKey: "token") else {
                 //로그인에 실패했으면, userdefaults의 token 값을 nil로 만들어줬다.
                 //로그인에 실패했다는 alert를 띄워주자
                 

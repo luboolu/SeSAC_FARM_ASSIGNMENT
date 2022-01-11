@@ -134,11 +134,39 @@ class PostViewController: UIViewController {
     
     func getPost() {
         hud.show(in: self.view)
-        viewModel.getPost {
+        viewModel.getPost { result in
             print("get post complete!")
-            self.postTableView.reloadData()
-            self.hud.dismiss(afterDelay: 0)
+            print(result)
+            
+            if result == .unauthorized {
+                print("사용자 정보 만료!")
+                self.hud.dismiss(afterDelay: 0)
+                self.updateToken()
+                
+                
+            } else {
+                self.postTableView.reloadData()
+                self.hud.dismiss(afterDelay: 0)
+            }
+
         }
+    }
+    
+    func updateToken() {
+        let alert = UIAlertController(title: "로그인 정보 만료", message: "다시 로그인 해주세요", preferredStyle: .alert)
+        
+        let ok = UIAlertAction(title: "확인", style: .default, handler: { _ in
+            //확인 버튼이 눌리면, sign in view controller로 화면 전환
+            DispatchQueue.main.async {
+                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+                windowScene.windows.first?.rootViewController = UINavigationController(rootViewController: SignInViewController())
+                windowScene.windows.first?.makeKeyAndVisible()
+            }
+        })
+
+        alert.addAction(ok)
+
+        self.present(alert, animated: true, completion: nil)
     }
     
     @objc func postAddButtonClicked() {
