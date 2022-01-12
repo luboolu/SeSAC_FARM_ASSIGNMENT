@@ -50,6 +50,8 @@ class CommentEditViewController: UIViewController, ViewRepresentable {
         view.backgroundColor = .white
         
         view.addSubview(commentTextView)
+        
+        commentTextView.text = self.commentData?.comment ?? ""
     }
     
     func setupConstraints() {
@@ -83,10 +85,18 @@ class CommentEditViewController: UIViewController, ViewRepresentable {
             return
         }
         
-        viewModel.editComment(postId: post, commentId: comment, text: text) {
-            print("수정 완료")
-            self.hud.dismiss(afterDelay: 0)
-            self.navigationController?.popViewController(animated: true)
+        viewModel.editComment(postId: post, commentId: comment, text: text) { result in
+            
+            if result == .unauthorized {
+                print("사용자 정보 만료!")
+                self.hud.dismiss(afterDelay: 0)
+                self.updateToken()
+            } else {
+                print("수정 완료")
+                self.hud.dismiss(afterDelay: 0)
+                self.navigationController?.popViewController(animated: true)
+            }
+
         }
         
         

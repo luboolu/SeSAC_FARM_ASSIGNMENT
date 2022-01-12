@@ -146,20 +146,35 @@ class PostDetailViewController: UIViewController {
             if self.canEditable(selectecId: self.viewModel.postData?.user.id ?? -1) {
                 print("삭제할 수 있습니다")
                 
-                if let postId = self.viewModel.postData?.id {
-                    self.hud.show(in: self.view)
-                    
-                    self.viewModel.deletePost(id: postId) {  result in
+                //1. UIAlertController 생성: 밑바탕 + 타이틀 + 본문
+                //let alert = UIAlertController(title: "타이틀 테스트", message: "메시지가 입력되었습니다.", preferredStyle: .alert)
+                let alert = UIAlertController(title: "주의", message: "게시글을 삭제하시겠습니까?", preferredStyle: .alert)
+                
+                //2. UIAlertAction 생성: 버튼들을...
+                let ok = UIAlertAction(title: "확인", style: .default) { _ in
+                    if let postId = self.viewModel.postData?.id {
+                        self.hud.show(in: self.view)
+                        
+                        self.viewModel.deletePost(id: postId) {  result in
+                            
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                            self.hud.dismiss(afterDelay: 0)
+                            self.navigationController?.popViewController(animated: true)
+                        }
                         
                     }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                        self.hud.dismiss(afterDelay: 0)
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                    
                 }
+                let cancel = UIAlertAction(title: "취소", style: .cancel)
 
+                //3. 1 + 2
+                alert.addAction(ok)
+                alert.addAction(cancel)
+
+                //4. present
+                self.present(alert, animated: true, completion: nil)
+                
             } else {
                 print("삭제할 수 없습니다")
                 self.view.makeToast("본인의 게시글만 삭제할 수 있습니다" ,duration: 2.0, position: .bottom, style: self.style)
@@ -237,6 +252,7 @@ class PostDetailViewController: UIViewController {
         view.addSubview(commentUploadButton)
         
         commentUploadButton.addTarget(self, action: #selector(commentUploadButtonClicked), for: .touchUpInside)
+        
         
     }
     
@@ -376,7 +392,23 @@ class PostDetailViewController: UIViewController {
 
                     self.nicknameLabel.text = "\(postData.user.username)"
                     self.postContentTextView.text = "\(postData.text)"
-                    self.dateLabel.text = "\(postData.createdAt)"
+                    
+                    var subStringDate = postData.createdAt.substring(from: 0, to: 18)
+                    subStringDate.append("Z")
+                    
+                    // The default timeZone for ISO8601DateFormatter is UTC
+                    let utcISODateFormatter = ISO8601DateFormatter()
+                    let utcDate = utcISODateFormatter.date(from: subStringDate)!
+                    
+                    let df = DateFormatter()
+                    df.locale = Locale(identifier: "ko_KR")
+                    df.timeZone = TimeZone(abbreviation: "KST")
+                    df.dateFormat = "MM/dd hh:mm"
+
+                    let date = df.string(from: utcDate)
+                    
+                    
+                    self.dateLabel.text = "\(date)"
                     
                     self.getCommentData(id: postData.id)
                 }
@@ -438,7 +470,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print(#function)
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentTableViewCell.identifier) as? CommentTableViewCell else { return UITableViewCell() }
-        //cell.selectionStyle = .none
+        cell.selectionStyle = .none
 
         if let data = self.viewModel.commentData {
             let row = data[indexPath.row]
@@ -468,20 +500,34 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 if self.canEditable(selectecId: self.viewModel.commentData?[indexPath.row].user.id ?? -1) {
                     print("삭제할 수 있습니다")
+                    //삭제할건지 한번 더 물은 후에 삭제
+                    //1. UIAlertController 생성: 밑바탕 + 타이틀 + 본문
+                    let alert = UIAlertController(title: "주의", message: "댓글을 삭제하시겠습니까?", preferredStyle: .alert)
                     
-                    if let postId = self.viewModel.postData?.id, let commentId = self.viewModel.commentData?[indexPath.row].id {
-                        self.viewModel.deleteComment(postId: postId, commentId: commentId) { result in
-                            if result == .unauthorized {
-                                print("사용자 정보 만료!")
-                                self.hud.dismiss(afterDelay: 0)
-                                self.updateToken()
-                            } else {
-                                self.getCommentData(id: postId)
+                    //2. UIAlertAction 생성: 버튼들을...
+                    let ok = UIAlertAction(title: "확인", style: .default) { _ in
+                        if let postId = self.viewModel.postData?.id, let commentId = self.viewModel.commentData?[indexPath.row].id {
+                            self.viewModel.deleteComment(postId: postId, commentId: commentId) { result in
+                                if result == .unauthorized {
+                                    print("사용자 정보 만료!")
+                                    self.hud.dismiss(afterDelay: 0)
+                                    self.updateToken()
+                                } else {
+                                    self.getCommentData(id: postId)
+                                }
                             }
-                        }
-                        
-                        
-                        }
+
+                            }
+                    }
+                    let cancel = UIAlertAction(title: "취소", style: .cancel)
+
+                    
+                    //3. 1 + 2
+                    alert.addAction(ok)
+                    alert.addAction(cancel)
+                    
+                    //4. present
+                    self.present(alert, animated: true, completion: nil)
                     
 
                 } else {

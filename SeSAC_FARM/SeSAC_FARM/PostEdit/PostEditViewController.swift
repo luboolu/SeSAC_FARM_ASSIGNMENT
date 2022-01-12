@@ -25,6 +25,10 @@ class PostEditViewController: UIViewController, ViewRepresentable {
         textView.textColor = .black
         textView.textAlignment = .left
         textView.font = .systemFont(ofSize: 15, weight: .light)
+        textView.layer.borderColor = CGColor(red: 242/255, green: 243/255, blue: 245/255, alpha: 1)
+        textView.layer.borderWidth = 3
+        textView.clipsToBounds = true
+        textView.layer.cornerRadius = 10
        
         return textView
     }()
@@ -60,7 +64,7 @@ class PostEditViewController: UIViewController, ViewRepresentable {
             make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            make.height.equalTo(250)
         }
         
     }
@@ -69,12 +73,18 @@ class PostEditViewController: UIViewController, ViewRepresentable {
         hud.show(in: self.view)
         
         if let postId = self.postData?.id {
-            viewModel.postEdit(text: postTextView.text, id: postId) {
-                self.hud.dismiss(animated: true)
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                self.navigationController?.popViewController(animated: true)
+            viewModel.postEdit(text: postTextView.text, id: postId) { result in
+                if result == .unauthorized {
+                    print("사용자 정보 만료!")
+                    self.hud.dismiss(afterDelay: 0)
+                    self.updateToken()
+                } else {
+                    self.hud.dismiss(animated: true)
+                    
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
             }
 
         }

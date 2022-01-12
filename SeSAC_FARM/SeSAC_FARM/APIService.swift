@@ -43,9 +43,9 @@ class APIService {
     }
     
     //게시판 가져오기
-    static func getPost(token: String, completion: @escaping (Post?, APIResult?, UserError?) -> (Void)) {
+    static func getPost(token: String, start: Int, limit: Int, completion: @escaping (Post?, APIResult?, UserError?) -> (Void)) {
         
-        let url = URL(string: "\(URL.post)")!
+        let url = URL(string: "\(URL.post)&_start=\(start)&_limit=\(limit)")!
         var request = URLRequest(url: url)
         
         request.httpMethod = "GET"

@@ -11,9 +11,10 @@ import JGProgressHUD
 
 class PostViewController: UIViewController {
     
-    let hud = JGProgressHUD()
+    var startPage = 0
+    var limitPost = 100
     
-    //let mainView = PostView()
+    let hud = JGProgressHUD()
     let viewModel = PostViewModel()
     
     var titleLabel: UILabel = {
@@ -69,7 +70,7 @@ class PostViewController: UIViewController {
         setupView()
         setupConstraints()
         
-        getPost()
+        //getPost()
 
 
     }
@@ -77,6 +78,9 @@ class PostViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print(#function)
+        self.startPage = 0
+        self.viewModel.postData = []
+        self.viewModel.pagenationData = []
         getPost()
     }
     
@@ -92,6 +96,7 @@ class PostViewController: UIViewController {
         postTableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifier)
         postTableView.delegate = self
         postTableView.dataSource = self
+        postTableView.prefetchDataSource = self
         
         view.addSubview(postAddButton)
         postAddButton.addTarget(self, action: #selector(postAddButtonClicked), for: .touchUpInside)
@@ -134,7 +139,7 @@ class PostViewController: UIViewController {
     
     func getPost() {
         hud.show(in: self.view)
-        viewModel.getPost { result in
+        viewModel.getPost(start: self.startPage, limit: self.limitPost) { result in
             print("get post complete!")
             print(result)
             
@@ -143,10 +148,13 @@ class PostViewController: UIViewController {
                 self.hud.dismiss(afterDelay: 0)
                 self.updateToken()
             } else {
-                self.postTableView.reloadData()
-                self.hud.dismiss(afterDelay: 0)
-            }
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                    self.postTableView.reloadData()
+                    self.hud.dismiss(afterDelay: 0)
+                }
 
+            }
+            print("================================================")
         }
     }
     
@@ -173,7 +181,9 @@ class PostViewController: UIViewController {
     @objc func resetButtonClicked() {
         print(#function)
         //get post api 통신 다시 해서 tableview reload
-
+        self.startPage = 0
+        self.viewModel.postData = []
+        self.viewModel.pagenationData = []
         getPost()
 
     }
@@ -181,9 +191,31 @@ class PostViewController: UIViewController {
 }
 
 
-extension PostViewController: UITableViewDelegate, UITableViewDataSource {
+extension PostViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
+    
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        
+//        for indexPath in indexPaths {
+//            print(indexPath)
+//            if indexPath.row == 10 && self.startPage <= indexPath.section {
+//
+//                self.startPage += 1
+//                print("startPageUP: \(self.startPage)")
+//                self.getPost()
+//            }
+//
+//        }
+        
+        
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //return self.viewModel.postData?.count ?? 0
+        print("cell: ", self.viewModel.pagenationData.count * self.limitPost)
         return self.viewModel.postData?.count ?? 0
     }
     
@@ -195,14 +227,85 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier) as? PostTableViewCell else {
             return UITableViewCell()
         }
+//
+        print(indexPath)
+        print("pagenationData: ", self.viewModel.pagenationData.count)
+        print("startPage: ", self.startPage)
+        
+        
+//        let data = self.viewModel.pagenationData[indexPath.section]
+//        let row = data[indexPath.row]
+//        print(row.id)
+//        cell.nicknameLabel.text = "  \(row.user.username)  "
+//        cell.contentTextView.text = "\(row.text)"
+//
+//
+//        var subStringDate = row.createdAt.substring(from: 0, to: 18)
+//        subStringDate.append("Z")
+//
+//        // The default timeZone for ISO8601DateFormatter is UTC
+//        let utcISODateFormatter = ISO8601DateFormatter()
+//        let utcDate = utcISODateFormatter.date(from: subStringDate)!
+//
+//        let df = DateFormatter()
+//        df.locale = Locale(identifier: "ko_KR")
+//        df.timeZone = TimeZone(abbreviation: "KST")
+//        df.dateFormat = "MM/dd hh:mm"
+//
+//        let date = df.string(from: utcDate)
+//
+//        cell.dateLabel.text = "\(date)"
+//
+////
+//        cell.nicknameLabel.text = "\(indexPath)"
         
         if let data = self.viewModel.postData {
             let row = data[indexPath.row]
             print(row.user.username)
             cell.nicknameLabel.text = "  \(row.user.username)  "
             cell.contentTextView.text = "\(row.text)"
-            cell.dateLabel.text = "\(row.createdAt)"
+
+
+            var subStringDate = row.createdAt.substring(from: 0, to: 18)
+            subStringDate.append("Z")
+
+            // The default timeZone for ISO8601DateFormatter is UTC
+            let utcISODateFormatter = ISO8601DateFormatter()
+            let utcDate = utcISODateFormatter.date(from: subStringDate)!
+
+            let df = DateFormatter()
+            df.locale = Locale(identifier: "ko_KR")
+            df.timeZone = TimeZone(abbreviation: "KST")
+            df.dateFormat = "MM/dd hh:mm"
+
+            let date = df.string(from: utcDate)
+
+            cell.dateLabel.text = "\(date)"
         }
+
+//        if let data = self.viewModel.postData {
+//            let row = data[indexPath.row]
+//            print(row.user.username)
+//            cell.nicknameLabel.text = "  \(row.user.username)  "
+//            cell.contentTextView.text = "\(row.text)"
+//
+//
+//            var subStringDate = row.createdAt.substring(from: 0, to: 18)
+//            subStringDate.append("Z")
+//
+//            // The default timeZone for ISO8601DateFormatter is UTC
+//            let utcISODateFormatter = ISO8601DateFormatter()
+//            let utcDate = utcISODateFormatter.date(from: subStringDate)!
+//
+//            let df = DateFormatter()
+//            df.locale = Locale(identifier: "ko_KR")
+//            df.timeZone = TimeZone(abbreviation: "KST")
+//            df.dateFormat = "MM/dd hh:mm"
+//
+//            let date = df.string(from: utcDate)
+//
+//            cell.dateLabel.text = "\(date)"
+//        }
 
 
 
@@ -220,8 +323,22 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         
-        
 
     }
     
+}
+
+extension String {
+    func substring(from: Int, to: Int) -> String {
+        guard from < count, to >= 0, to - from >= 0 else {
+            return ""
+        }
+        
+        // Index 값 획득
+        let startIndex = index(self.startIndex, offsetBy: from)
+        let endIndex = index(self.startIndex, offsetBy: to + 1) // '+1'이 있는 이유: endIndex는 문자열의 마지막 그 다음을 가리키기 때문
+        
+        // 파싱
+        return String(self[startIndex ..< endIndex])
+    }
 }

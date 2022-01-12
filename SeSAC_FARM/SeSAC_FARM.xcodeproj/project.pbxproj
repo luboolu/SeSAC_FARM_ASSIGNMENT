@@ -44,9 +44,9 @@
 		DCA6810B2781E05E001E7598 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA6810A2781E05E001E7598 /* SignInView.swift */; };
 		DCA6810D2781E066001E7598 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA6810C2781E066001E7598 /* SignInViewModel.swift */; };
 		DCA681102781E8BD001E7598 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA6810F2781E8BD001E7598 /* PostViewController.swift */; };
-		DCA681122781E8C2001E7598 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA681112781E8C2001E7598 /* PostView.swift */; };
 		DCA681142781E8CA001E7598 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA681132781E8CA001E7598 /* PostViewModel.swift */; };
 		DCA681162781ECA2001E7598 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA681152781ECA1001E7598 /* PostTableViewCell.swift */; };
+		DCAA9410278ED94D004AA9D2 /* DateFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAA940F278ED94D004AA9D2 /* DateFormatter+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,9 +85,9 @@
 		DCA6810A2781E05E001E7598 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		DCA6810C2781E066001E7598 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		DCA6810F2781E8BD001E7598 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
-		DCA681112781E8C2001E7598 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		DCA681132781E8CA001E7598 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		DCA681152781ECA1001E7598 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		DCAA940F278ED94D004AA9D2 /* DateFormatter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +174,7 @@
 				DCA680FC2780752D001E7598 /* Endpoint.swift */,
 				DCA680FE2780763D001E7598 /* User.swift */,
 				DC03999A278C7EC600509BC4 /* URLSession+Extension.swift */,
+				DCAA940F278ED94D004AA9D2 /* DateFormatter+Extension.swift */,
 				DC03997127888A7100509BC4 /* PostCommentError.swift */,
 				DC855A062785F91F00C99B5B /* PostElement.swift */,
 				DC855A142786D72800C99B5B /* Toast+Extension.swift */,
@@ -223,7 +224,6 @@
 			children = (
 				DCA6810F2781E8BD001E7598 /* PostViewController.swift */,
 				DCA681152781ECA1001E7598 /* PostTableViewCell.swift */,
-				DCA681112781E8C2001E7598 /* PostView.swift */,
 				DCA681132781E8CA001E7598 /* PostViewModel.swift */,
 			);
 			path = Post;
@@ -342,7 +342,7 @@
 				DC8559F32783472800C99B5B /* PostAddViewController.swift in Sources */,
 				DC855A0E2786B7F800C99B5B /* PostAddViewModel.swift in Sources */,
 				DC855A1A2786DC4800C99B5B /* PostEditViewModel.swift in Sources */,
-				DCA681122781E8C2001E7598 /* PostView.swift in Sources */,
+				DCAA9410278ED94D004AA9D2 /* DateFormatter+Extension.swift in Sources */,
 				DCA680F72780613D001E7598 /* SignUpViewController.swift in Sources */,
 				DCA681142781E8CA001E7598 /* PostViewModel.swift in Sources */,
 			);

@@ -9,7 +9,7 @@ import Foundation
 
 class PostEditViewModel {
     
-    func postEdit(text: String, id: Int, completion: @escaping () -> Void) {
+    func postEdit(text: String, id: Int, completion: @escaping (APIResult?) -> Void) {
         
         DispatchQueue.main.async {
             print("post edit api start")
@@ -19,16 +19,14 @@ class PostEditViewModel {
             //http://test.monocoding.com:1231/comments?post=468
 
             guard let token = UserDefaults.standard.string(forKey: "token") else {
-                completion()
+                completion(.unauthorized)
                 return
             }
             
-            APIService.editPost(token: token, postId: id, text: text) { post, apierror, usererror in
+            APIService.editPost(token: token, postId: id, text: text) { post, apiresult, usererror in
                 
-                print(apierror)
-                print(usererror)
                 
-                completion()
+                completion(apiresult)
                 
             }
             

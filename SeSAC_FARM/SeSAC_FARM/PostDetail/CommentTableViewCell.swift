@@ -60,7 +60,7 @@ class CommentTableViewCell: UITableViewCell {
     lazy var commentButton: UIButton = {
         let button = UIButton()
         
-        button.backgroundColor = .red
+        button.backgroundColor = .clear
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         button.tintColor = UIColor(cgColor: CGColor(red: 145/255, green: 145/255, blue: 145/255, alpha: 1))
         button.layer.zPosition = 999

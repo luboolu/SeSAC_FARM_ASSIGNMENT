@@ -24,6 +24,10 @@ class PostAddViewController: UIViewController, ViewRepresentable {
         textView.textColor = .black
         textView.textAlignment = .left
         textView.font = .systemFont(ofSize: 15, weight: .light)
+        textView.layer.borderColor = CGColor(red: 242/255, green: 243/255, blue: 245/255, alpha: 1)
+        textView.layer.borderWidth = 3
+        textView.clipsToBounds = true
+        textView.layer.cornerRadius = 10
        
         return textView
     }()
@@ -57,7 +61,7 @@ class PostAddViewController: UIViewController, ViewRepresentable {
             make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            make.height.equalTo(250)
         }
         
     }

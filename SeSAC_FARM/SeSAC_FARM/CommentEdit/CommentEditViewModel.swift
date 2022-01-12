@@ -10,7 +10,7 @@ import UIKit
 class CommentViewModel {
     
     //댓글 수정
-    func editComment(postId: Int, commentId: Int, text: String, completion: @escaping () -> Void) {
+    func editComment(postId: Int, commentId: Int, text: String, completion: @escaping (APIResult?) -> Void) {
         
         DispatchQueue.main.async {
             print("edit comment api start")
@@ -20,16 +20,13 @@ class CommentViewModel {
             //http://test.monocoding.com:1231/comments?post=468
 
             guard let token = UserDefaults.standard.string(forKey: "token") else {
-                completion()
+                completion(.unauthorized)
                 return
             }
             
-            APIService.editComments(token: token, commentId: commentId, postId: postId, text: text){ comment, apierror, usererror in
+            APIService.editComments(token: token, commentId: commentId, postId: postId, text: text){ comment, apiresult, usererror in
                 
-                print(apierror)
-                print(usererror)
-                
-                completion()
+                completion(apiresult)
             }
             
         }
