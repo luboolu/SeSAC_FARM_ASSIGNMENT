@@ -13,7 +13,7 @@ class PostDetailViewModel {
     var postData: PostElement?
     
     //댓글 가져오기
-    func getComment(id: Int, completion: @escaping () -> Void) {
+    func getComment(id: Int, completion: @escaping (APIResult?) -> Void) {
         
         DispatchQueue.main.async {
             print("get comment api start")
@@ -23,20 +23,17 @@ class PostDetailViewModel {
             //http://test.monocoding.com:1231/comments?post=468
 
             guard let token = UserDefaults.standard.string(forKey: "token") else {
-                completion()
+                completion(.unauthorized)
                 return
             }
             
-            APIService.getComments(token: token, postId: id) { comment, apierror, usererror in
+            APIService.getComments(token: token, postId: id) { comment, apiresult, usererror in
                 
                 if let comment = comment {
                     self.commentData = comment
                 }
                 
-                print(apierror)
-                print(usererror)
-                
-                completion()
+                completion(apiresult)
             }
             
         }
@@ -44,7 +41,7 @@ class PostDetailViewModel {
     }
     
     //댓글 업로드
-    func uploadComment(id: Int, text: String, completion: @escaping () -> Void) {
+    func uploadComment(id: Int, text: String, completion: @escaping (APIResult?) -> Void) {
         
         DispatchQueue.main.async {
             print("upload comment api start")
@@ -54,17 +51,15 @@ class PostDetailViewModel {
             //http://test.monocoding.com:1231/comments?post=468
 
             guard let token = UserDefaults.standard.string(forKey: "token") else {
-                completion()
+                completion(.unauthorized)
                 return
             }
             
             
-            APIService.postComments(token: token, postId: id, comment: text) { comment, apierror, usererror in
+            APIService.postComments(token: token, postId: id, comment: text) { comment, apiresult, usererror in
                 
-                print(apierror)
-                print(usererror)
 
-                completion()
+                completion(apiresult)
             }
             
         }
@@ -72,7 +67,7 @@ class PostDetailViewModel {
     }
     
     //댓글 삭제
-    func deleteComment(postId: Int, commentId: Int, completion: @escaping () -> Void) {
+    func deleteComment(postId: Int, commentId: Int, completion: @escaping (APIResult?) -> Void) {
         
         DispatchQueue.main.async {
             print("upload comment api start")
@@ -82,25 +77,22 @@ class PostDetailViewModel {
             //http://test.monocoding.com:1231/comments?post=468
 
             guard let token = UserDefaults.standard.string(forKey: "token") else {
-                completion()
+                completion(.unauthorized)
                 return
             }
             
             
-            APIService.deleteComments(token: token, commentId: commentId, postId: postId) { comment, apierror, usererror in
+            APIService.deleteComments(token: token, commentId: commentId, postId: postId) { comment, apiresult, usererror in
                 
-                print(apierror)
-                print(usererror)
-
                 
-                completion()
+                completion(apiresult)
             }
             
         }
         
     }
     
-    func deletePost(id: Int, completion: @escaping () -> Void) {
+    func deletePost(id: Int, completion: @escaping (APIResult?) -> Void) {
         DispatchQueue.main.async {
             print("delete post api start")
             
@@ -108,23 +100,20 @@ class PostDetailViewModel {
             //Header - Authorization : Bearer + jwt
 
             guard let token = UserDefaults.standard.string(forKey: "token") else {
-                completion()
+                completion(.unauthorized)
                 return
             }
             
-            APIService.deletePost(token: token, postId: id) { post, apierror, usererror in
+            APIService.deletePost(token: token, postId: id) { post, apiresult, usererror in
                 
-                print(apierror)
-                print(usererror)
-
-                completion()
+                completion(apiresult)
             }
             
         }
     }
     
     
-    func reloadPost(id: Int, completion: @escaping () -> Void) {
+    func reloadPost(id: Int, completion: @escaping (APIResult?) -> Void) {
         
         DispatchQueue.main.async {
             print("post reload api start")
@@ -134,20 +123,18 @@ class PostDetailViewModel {
             //http://test.monocoding.com:1231/comments?post=468
 
             guard let token = UserDefaults.standard.string(forKey: "token") else {
-                completion()
+                completion(.unauthorized)
                 return
             }
             
-            APIService.reloadPost(token: token, postId: id) { post, apierror, usererror in
+            APIService.reloadPost(token: token, postId: id) { post, apiresult, usererror in
                 
                 if let post = post {
                     self.postData = post
                 }
                 
-                print(apierror)
-                print(usererror)
                 
-                completion()
+                completion(apiresult)
                 
             }
             

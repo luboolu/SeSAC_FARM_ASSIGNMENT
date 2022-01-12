@@ -142,8 +142,6 @@ class PostViewController: UIViewController {
                 print("사용자 정보 만료!")
                 self.hud.dismiss(afterDelay: 0)
                 self.updateToken()
-                
-                
             } else {
                 self.postTableView.reloadData()
                 self.hud.dismiss(afterDelay: 0)
@@ -157,11 +155,7 @@ class PostViewController: UIViewController {
         
         let ok = UIAlertAction(title: "확인", style: .default, handler: { _ in
             //확인 버튼이 눌리면, sign in view controller로 화면 전환
-            DispatchQueue.main.async {
-                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-                windowScene.windows.first?.rootViewController = UINavigationController(rootViewController: SignInViewController())
-                windowScene.windows.first?.makeKeyAndVisible()
-            }
+            self.navigationController?.pushViewController(SignInViewController(), animated: true)
         })
 
         alert.addAction(ok)

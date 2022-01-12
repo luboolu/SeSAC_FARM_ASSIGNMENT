@@ -9,7 +9,7 @@ import Foundation
 
 class PostAddViewModel {
     
-    func uploadPost(text: String, completion: @escaping () -> Void) {
+    func uploadPost(text: String, completion: @escaping (APIResult?) -> Void) {
         
         DispatchQueue.main.async {
             print("upload post api start")
@@ -19,19 +19,17 @@ class PostAddViewModel {
             //Header - Authrization
             
             guard let token = UserDefaults.standard.string(forKey: "token") else {
-                completion()
+                completion(.unauthorized)
                 return
             }
             
-            APIService.uploadPost(token: token, text: text) { post, apierror, usererror in
+            APIService.uploadPost(token: token, text: text) { post, apiresult, usererror in
 
-                print(apierror)
-                print(usererror)
                 if let post = post {
                     print(post)
                 }
                 
-                completion()
+                completion(apiresult)
                 
             }
             

@@ -24,10 +24,12 @@ class SignInViewController: UIViewController {
         
         hud.textLabel.text = "Loading"
         self.navigationItem.title = "새싹농장 로그인"
+        self.navigationController?.isNavigationBarHidden = false
         
         mainView.identifierTextField.addTarget(self, action: #selector(identifierTextFieldDidChange(_:)), for: .editingChanged)
         mainView.passwordTextField.addTarget(self, action: #selector(passwordTextFieldDidChange(_:)), for: .editingChanged)
         mainView.signInButton.addTarget(self, action: #selector(signInButtonClicked), for: .touchUpInside)
+        mainView.signUpButton.addTarget(self, action: #selector(signUpButtonClicked), for: .touchUpInside)
         
     }
     
@@ -88,6 +90,11 @@ class SignInViewController: UIViewController {
             //4. present
             self.present(alert, animated: true, completion: nil)
         }
+    }
+    
+    @objc func signUpButtonClicked() {
+        print(#function)
+        self.navigationController?.pushViewController(SignUpViewController(), animated: true)
     }
     
     func detectTextFieldFill() {

@@ -149,7 +149,7 @@ class PostDetailViewController: UIViewController {
                 if let postId = self.viewModel.postData?.id {
                     self.hud.show(in: self.view)
                     
-                    self.viewModel.deletePost(id: postId) {
+                    self.viewModel.deletePost(id: postId) {  result in
                         
                     }
                     
@@ -332,11 +332,16 @@ class PostDetailViewController: UIViewController {
         //게시물 삭제에 성공하면 pop으로 화면전환
         
         hud.show(in: self.view)
-        viewModel.getComment(id: id) {
-            //print("댓글 데이터")
-            //print(self.viewModel.commentData)
-            self.commentTableView.reloadData()
-            self.hud.dismiss(afterDelay: 0)
+        viewModel.getComment(id: id) { result in
+            
+            if result == .unauthorized {
+                print("사용자 정보 만료!")
+                self.hud.dismiss(afterDelay: 0)
+                self.updateToken()
+            } else {
+                self.commentTableView.reloadData()
+                self.hud.dismiss(afterDelay: 0)
+            }
         }
         
         
@@ -344,9 +349,15 @@ class PostDetailViewController: UIViewController {
     
     func postDelete(id: Int) {
         hud.show(in: self.view)
-        viewModel.getComment(id: id) {
-            self.commentTableView.reloadData()
-            self.hud.dismiss(afterDelay: 0)
+        viewModel.getComment(id: id) { result in
+            if result == .unauthorized {
+                print("사용자 정보 만료!")
+                self.hud.dismiss(afterDelay: 0)
+                self.updateToken()
+            } else {
+                self.commentTableView.reloadData()
+                self.hud.dismiss(afterDelay: 0)
+            }
         }
     }
     
@@ -354,23 +365,39 @@ class PostDetailViewController: UIViewController {
         
         
         hud.show(in: self.view)
-        viewModel.reloadPost(id: id) {
+        viewModel.reloadPost(id: id) { result in
+            if result == .unauthorized {
+                print("사용자 정보 만료!")
+                self.hud.dismiss(afterDelay: 0)
+                self.updateToken()
+            } else {
             
-//            print("아이디!!!!!!!!11: \(self.postId)")
-//            print(self.viewModel.postData)
-            if let postData = self.viewModel.postData {
+                if let postData = self.viewModel.postData {
 
-                self.nicknameLabel.text = "\(postData.user.username)"
-                self.postContentTextView.text = "\(postData.text)"
-                self.dateLabel.text = "\(postData.createdAt)"
+                    self.nicknameLabel.text = "\(postData.user.username)"
+                    self.postContentTextView.text = "\(postData.text)"
+                    self.dateLabel.text = "\(postData.createdAt)"
+                    
+                    self.getCommentData(id: postData.id)
+                }
                 
-                self.getCommentData(id: postData.id)
+                self.view.reloadInputViews()
+                self.hud.dismiss(afterDelay: 0)
             }
-            
-            
-            self.view.reloadInputViews()
-            self.hud.dismiss(afterDelay: 0)
         }
+    }
+    
+    func updateToken() {
+        let alert = UIAlertController(title: "로그인 정보 만료", message: "다시 로그인 해주세요", preferredStyle: .alert)
+        
+        let ok = UIAlertAction(title: "확인", style: .default, handler: { _ in
+            //확인 버튼이 눌리면, sign in view controller로 화면 전환
+            self.navigationController?.pushViewController(SignInViewController(), animated: true)
+        })
+
+        alert.addAction(ok)
+
+        self.present(alert, animated: true, completion: nil)
     }
     
     @objc func commentUploadButtonClicked() {
@@ -379,12 +406,17 @@ class PostDetailViewController: UIViewController {
         hud.show(in: self.view)
         let comment = inputCommentTextField.text! ?? ""
         
-        viewModel.uploadComment(id: self.postId, text: comment) {
-            self.getCommentData(id: self.postId)
+        viewModel.uploadComment(id: self.postId, text: comment) { result in
+            if result == .unauthorized {
+                print("사용자 정보 만료!")
+                self.hud.dismiss(afterDelay: 0)
+                self.updateToken()
+            } else {
+                self.getCommentData(id: self.postId)
+                self.hud.dismiss(afterDelay: 0)
+            }
         }
         
-        self.view.reloadInputViews()
-        self.hud.dismiss(afterDelay: 0)
     }
     
 
@@ -438,23 +470,19 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
                     print("삭제할 수 있습니다")
                     
                     if let postId = self.viewModel.postData?.id, let commentId = self.viewModel.commentData?[indexPath.row].id {
-                        self.viewModel.deleteComment(postId: postId, commentId: commentId) {
-                            print("삭제완료")
-                            self.getCommentData(id: postId)
+                        self.viewModel.deleteComment(postId: postId, commentId: commentId) { result in
+                            if result == .unauthorized {
+                                print("사용자 정보 만료!")
+                                self.hud.dismiss(afterDelay: 0)
+                                self.updateToken()
+                            } else {
+                                self.getCommentData(id: postId)
+                            }
                         }
                         
-                        self.view.reloadInputViews()
+                        
                         }
                     
-                    
-//                    if let postId = self.viewModel.postData?.id {
-//                        self.viewModel.deletePost(id: postId) {
-//
-//                        }
-//
-//                        self.navigationController?.popViewController(animated: true)
-//
-//                    }
 
                 } else {
                     print("삭제할 수 없습니다")

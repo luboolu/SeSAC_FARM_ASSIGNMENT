@@ -21,7 +21,7 @@ class SignInViewModel {
             //로그인 했으면, 토큰을 userdefault에 저장해야함!!
             if let data = data {
                 print(data.jwt)
-                UserDefaults.standard.set("data.jwt", forKey: "token")
+                UserDefaults.standard.set(data.jwt, forKey: "token")
                 UserDefaults.standard.set(data.user.id, forKey: "userid")
             } else {
                 self.error = usererror

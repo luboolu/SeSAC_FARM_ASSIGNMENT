@@ -78,8 +78,19 @@ class PostEditViewController: UIViewController, ViewRepresentable {
             }
 
         }
+    }
+    
+    func updateToken() {
+        let alert = UIAlertController(title: "로그인 정보 만료", message: "다시 로그인 해주세요", preferredStyle: .alert)
         
+        let ok = UIAlertAction(title: "확인", style: .default, handler: { _ in
+            //확인 버튼이 눌리면, sign in view controller로 화면 전환
+            self.navigationController?.pushViewController(SignInViewController(), animated: true)
+        })
 
+        alert.addAction(ok)
+
+        self.present(alert, animated: true, completion: nil)
     }
     
     @objc func completeButtonClicked() {
