@@ -41,6 +41,7 @@ class CommentEditViewController: UIViewController, ViewRepresentable {
         
         self.navigationItem.title = "댓글 수정"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(completeButtonClicked))
+        self.navigationController?.navigationBar.tintColor = .black
         
         setupView()
         setupConstraints()

@@ -25,6 +25,7 @@ class SignInViewController: UIViewController {
         hud.textLabel.text = "Loading"
         self.navigationItem.title = "새싹농장 로그인"
         self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.navigationBar.tintColor = .black
         
         mainView.identifierTextField.addTarget(self, action: #selector(identifierTextFieldDidChange(_:)), for: .editingChanged)
         mainView.passwordTextField.addTarget(self, action: #selector(passwordTextFieldDidChange(_:)), for: .editingChanged)

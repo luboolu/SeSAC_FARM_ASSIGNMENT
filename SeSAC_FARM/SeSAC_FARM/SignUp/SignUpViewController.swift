@@ -25,6 +25,7 @@ class SignUpViewController: UIViewController {
         
         hud.textLabel.text = "Loading"
         self.navigationItem.title = "새싹농장 가입하기"
+        self.navigationController?.navigationBar.tintColor = .black
     
         
         mainView.emailTextField.addTarget(self, action: #selector(emailTextFieldDidChange(_:)), for: .editingChanged)
