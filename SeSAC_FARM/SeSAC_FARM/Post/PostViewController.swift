@@ -209,9 +209,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource, UITabl
         
     }
 
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return self.viewModel.postData?.count ?? 0
@@ -260,7 +258,8 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource, UITabl
 //        cell.nicknameLabel.text = "\(indexPath)"
         
         if let data = self.viewModel.postData {
-            let row = data[indexPath.row]
+
+            let row = try! data[indexPath.row]
             print(row.user.username)
             cell.nicknameLabel.text = "  \(row.user.username)  "
             cell.contentTextView.text = "\(row.text)"
@@ -281,6 +280,9 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource, UITabl
             let date = df.string(from: utcDate)
 
             cell.dateLabel.text = "\(date)"
+
+            
+
         }
 
 //        if let data = self.viewModel.postData {
