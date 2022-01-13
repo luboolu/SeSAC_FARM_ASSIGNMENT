@@ -49,6 +49,15 @@ class PostAddViewController: UIViewController, ViewRepresentable {
         setupConstraints()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print(#function)
+//        let vc = PostViewController()
+//        vc.getPost()
+//        vc.reloadInputViews()
+        
+    }
+    
     func setupView() {
         view.backgroundColor = .white
 
@@ -73,14 +82,23 @@ class PostAddViewController: UIViewController, ViewRepresentable {
             
             if result == .unauthorized {
                 print("사용자 정보 만료!")
-                self.hud.dismiss(afterDelay: 0)
-                self.updateToken()
-            } else {
                 self.hud.dismiss(animated: true)
+                self.updateToken()
+            } else if result == .succeed {
+                self.hud.dismiss(animated: true)
+                self.navigationController?.popViewController(animated: true)
+            }else {
+                self.hud.dismiss(animated: true)
+                
+                let alert = UIAlertController(title: "네트워크 통신 에러", message: "네트워크 상태를 확인해주세요", preferredStyle: .alert)
+                let ok = UIAlertAction(title: "확인", style: .default)
+
+                alert.addAction(ok)
+
+                self.present(alert, animated: true, completion: nil)
             }
         }
-        
-        self.navigationController?.popViewController(animated: true)
+    
     }
     
     func updateToken() {

@@ -76,14 +76,23 @@ class PostEditViewController: UIViewController, ViewRepresentable {
             viewModel.postEdit(text: postTextView.text, id: postId) { result in
                 if result == .unauthorized {
                     print("사용자 정보 만료!")
-                    self.hud.dismiss(afterDelay: 0)
+                    self.hud.dismiss(animated: true)
                     self.updateToken()
-                } else {
+                } else if result == .succeed {
                     self.hud.dismiss(animated: true)
                     
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                         self.navigationController?.popViewController(animated: true)
                     }
+                } else {
+                    self.hud.dismiss(animated: true)
+                    
+                    let alert = UIAlertController(title: "네트워크 통신 에러", message: "네트워크 상태를 확인해주세요", preferredStyle: .alert)
+                    let ok = UIAlertAction(title: "확인", style: .default)
+
+                    alert.addAction(ok)
+
+                    self.present(alert, animated: true, completion: nil)
                 }
             }
 

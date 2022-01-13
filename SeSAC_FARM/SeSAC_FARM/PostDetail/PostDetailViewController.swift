@@ -19,6 +19,9 @@ class PostDetailViewController: UIViewController {
     var postId = -1
     var selectedCommentID = -1
     
+    let scrollView = UIScrollView()
+    let contentView = UIView()
+    
     var commentTableView: UITableView = {
         let tableView = UITableView()
         
@@ -78,7 +81,7 @@ class PostDetailViewController: UIViewController {
         textView.backgroundColor = .white
         textView.text = "새싹농장 가입인사 드려요!!!"
         textView.isEditable = false
-        textView.isScrollEnabled = false
+        textView.isScrollEnabled = true
         textView.textColor = .black
         textView.textAlignment = .left
         textView.font = .systemFont(ofSize: 15, weight: .medium)
@@ -156,13 +159,28 @@ class PostDetailViewController: UIViewController {
                         self.hud.show(in: self.view)
                         
                         self.viewModel.deletePost(id: postId) {  result in
-                            
+                            if result == .unauthorized {
+                                print("사용자 정보 만료!")
+                                self.hud.dismiss(animated: true)
+                                self.updateToken()
+                            } else if result == .succeed {
+                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                                    self.hud.dismiss(animated: true)
+                                    self.navigationController?.popViewController(animated: true)
+                                }
+                            }else {
+                                self.hud.dismiss(animated: true)
+                                
+                                let alert = UIAlertController(title: "네트워크 통신 에러", message: "네트워크 상태를 확인해주세요", preferredStyle: .alert)
+                                let ok = UIAlertAction(title: "확인", style: .default)
+
+                                alert.addAction(ok)
+
+                                self.present(alert, animated: true, completion: nil)
+                            }
                         }
                         
-                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                            self.hud.dismiss(afterDelay: 0)
-                            self.navigationController?.popViewController(animated: true)
-                        }
+
                         
                     }
                 }
@@ -217,6 +235,15 @@ class PostDetailViewController: UIViewController {
 
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print(#function)
+//        let vc = PostViewController()
+//        vc.getPost()
+//        vc.reloadInputViews()
+//
+    }
+    
     
     func setupView() {
         view.backgroundColor = .white
@@ -225,39 +252,32 @@ class PostDetailViewController: UIViewController {
 
         profileStackView1.addSubview(nicknameLabel)
         profileStackView1.addSubview(dateLabel)
-        
+
         view.addSubview(profileStackView1)
         view.addSubview(postContentTextView)
-        
+
         //댓글 테이블뷰
         view.addSubview(commentTableView)
         commentTableView.register(CommentTableViewCell.self, forCellReuseIdentifier: CommentTableViewCell.identifier)
         commentTableView.delegate = self
         commentTableView.dataSource = self
-        
-        //commentTableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
-//        commentStackView.addSubview(inputCommentTextField)
-//        commentStackView.addSubview(commentUploadButton)
-        //view.addSubview(commentStackView)
+
+        
         inputCommentView.addSubview(inputCommentTextField)
         view.addSubview(inputCommentView)
-        
+
         inputCommentView.backgroundColor = UIColor(cgColor: CGColor(red: 242/255, green: 243/255, blue: 245/255, alpha: 1))
         inputCommentView.clipsToBounds = true
         inputCommentView.layer.cornerRadius = 10
-        
 
-        
         view.addSubview(commentUploadButton)
-        
+
         commentUploadButton.addTarget(self, action: #selector(commentUploadButtonClicked), for: .touchUpInside)
-        
-        
     }
     
     func setupConstraints() {
-        
+
         profileImage.snp.makeConstraints { make in
 
             make.top.equalTo(view.safeAreaLayoutGuide).offset(4)
@@ -265,57 +285,58 @@ class PostDetailViewController: UIViewController {
             make.width.equalTo(40)
             make.height.equalTo(40)
         }
-        
+
         nicknameLabel.snp.makeConstraints { make in
             make.top.equalTo(profileStackView1.snp.top)
             make.leading.equalTo(profileStackView1.snp.leading)
             make.trailing.equalTo(profileStackView1.snp.trailing)
             make.height.equalTo(20)
         }
-        
+
         dateLabel.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.bottom)
             make.leading.equalTo(profileStackView1.snp.leading)
             make.trailing.equalTo(profileStackView1.snp.trailing)
             make.height.equalTo(20)
         }
-        
+
         profileStackView1.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(4)
             make.leading.equalTo(profileImage.snp.trailing).offset(8)
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            
+
         }
-        
+
         postContentTextView.snp.makeConstraints { make in
             make.top.equalTo(profileImage.snp.bottom).offset(16)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
             make.height.greaterThanOrEqualTo(88)
-            make.height.lessThanOrEqualTo(300)
+            make.height.lessThanOrEqualTo(200)
         }
-        
+
         commentTableView.snp.makeConstraints { make in
             make.top.equalTo(postContentTextView.snp.bottom).offset(16)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            //make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
         }
-        
+
+
+
         inputCommentView.snp.makeConstraints { make in
             make.top.equalTo(commentTableView.snp.bottom).offset(4)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             make.height.equalTo(44)
         }
-        
+
         inputCommentTextField.snp.makeConstraints { make in
             make.top.equalTo(inputCommentView.snp.top).offset(4)
             make.leading.equalTo(inputCommentView.snp.leading).offset(12)
             make.trailing.equalTo(inputCommentView.snp.trailing).offset(-4)
             make.bottom.equalTo(inputCommentView.snp.bottom).offset(-4)
         }
-        
+
         commentUploadButton.snp.makeConstraints { make in
             make.top.equalTo(commentTableView.snp.bottom).offset(4)
             make.leading.equalTo(inputCommentView.snp.trailing).offset(4)
@@ -334,8 +355,7 @@ class PostDetailViewController: UIViewController {
         print(#function)
         //포스트의 user.id == user default의 user id이면 true 반환, 아니면 false 반환
         let myId = UserDefaults.standard.integer(forKey: "userid")
-        //let postUserId = self.viewModel.postData?.user.id ?? -1
-        
+
         if myId == selectecId {
             return true
         } else {
@@ -345,18 +365,26 @@ class PostDetailViewController: UIViewController {
     }
     
     func getCommentData(id: Int) {
-        //게시물 삭제에 성공하면 pop으로 화면전환
-        
+        //댓글 데이터 가져오기
         hud.show(in: self.view)
         viewModel.getComment(id: id) { result in
             
             if result == .unauthorized {
                 print("사용자 정보 만료!")
-                self.hud.dismiss(afterDelay: 0)
+                self.hud.dismiss(animated: true)
                 self.updateToken()
-            } else {
+            } else if result == .succeed {
                 self.commentTableView.reloadData()
-                self.hud.dismiss(afterDelay: 0)
+                self.hud.dismiss(animated: true)
+            } else {
+                self.hud.dismiss(animated: true)
+                
+                let alert = UIAlertController(title: "네트워크 통신 에러", message: "네트워크 상태를 확인해주세요", preferredStyle: .alert)
+                let ok = UIAlertAction(title: "확인", style: .default)
+
+                alert.addAction(ok)
+
+                self.present(alert, animated: true, completion: nil)
             }
         }
         
@@ -364,29 +392,38 @@ class PostDetailViewController: UIViewController {
     }
     
     func postDelete(id: Int) {
+        //게시글 삭제하기
         hud.show(in: self.view)
         viewModel.getComment(id: id) { result in
             if result == .unauthorized {
                 print("사용자 정보 만료!")
-                self.hud.dismiss(afterDelay: 0)
+                self.hud.dismiss(animated: true)
                 self.updateToken()
-            } else {
+            } else if result == .succeed {
                 self.commentTableView.reloadData()
-                self.hud.dismiss(afterDelay: 0)
+                self.hud.dismiss(animated: true)
+            } else {
+                self.hud.dismiss(animated: true)
+                
+                let alert = UIAlertController(title: "네트워크 통신 에러", message: "네트워크 상태를 확인해주세요", preferredStyle: .alert)
+                let ok = UIAlertAction(title: "확인", style: .default)
+
+                alert.addAction(ok)
+
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }
     
     func reloadPost(id: Int) {
-        
-        
+        //게시글 새로고침
         hud.show(in: self.view)
         viewModel.reloadPost(id: id) { result in
             if result == .unauthorized {
                 print("사용자 정보 만료!")
-                self.hud.dismiss(afterDelay: 0)
+                self.hud.dismiss(animated: true)
                 self.updateToken()
-            } else {
+            } else if result == .succeed {
             
                 if let postData = self.viewModel.postData {
 
@@ -414,7 +451,16 @@ class PostDetailViewController: UIViewController {
                 }
                 
                 self.view.reloadInputViews()
-                self.hud.dismiss(afterDelay: 0)
+                self.hud.dismiss(animated: true)
+            } else {
+                self.hud.dismiss(animated: true)
+                
+                let alert = UIAlertController(title: "네트워크 통신 에러", message: "네트워크 상태를 확인해주세요", preferredStyle: .alert)
+                let ok = UIAlertAction(title: "확인", style: .default)
+
+                alert.addAction(ok)
+
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }
@@ -434,18 +480,29 @@ class PostDetailViewController: UIViewController {
     
     @objc func commentUploadButtonClicked() {
         print(#function)
-        
+        //댓글 업로드
         hud.show(in: self.view)
-        let comment = inputCommentTextField.text! ?? ""
+        let comment = inputCommentTextField.text ?? ""
         
         viewModel.uploadComment(id: self.postId, text: comment) { result in
             if result == .unauthorized {
                 print("사용자 정보 만료!")
-                self.hud.dismiss(afterDelay: 0)
+                self.hud.dismiss(animated: true)
                 self.updateToken()
-            } else {
+            } else if result == .succeed {
+                self.view.endEditing(true)
+                self.inputCommentTextField.text = ""
                 self.getCommentData(id: self.postId)
-                self.hud.dismiss(afterDelay: 0)
+                self.hud.dismiss(animated: true)
+            } else {
+                self.hud.dismiss(animated: true)
+                
+                let alert = UIAlertController(title: "네트워크 통신 에러", message: "네트워크 상태를 확인해주세요", preferredStyle: .alert)
+                let ok = UIAlertAction(title: "확인", style: .default)
+
+                alert.addAction(ok)
+
+                self.present(alert, animated: true, completion: nil)
             }
         }
         
@@ -510,18 +567,26 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
                             self.viewModel.deleteComment(postId: postId, commentId: commentId) { result in
                                 if result == .unauthorized {
                                     print("사용자 정보 만료!")
-                                    self.hud.dismiss(afterDelay: 0)
+                                    self.hud.dismiss(animated: true)
                                     self.updateToken()
-                                } else {
+                                } else if result == .succeed {
                                     self.getCommentData(id: postId)
+                                } else {
+                                    self.hud.dismiss(animated: true)
+                                    
+                                    let alert = UIAlertController(title: "네트워크 통신 에러", message: "네트워크 상태를 확인해주세요", preferredStyle: .alert)
+                                    let ok = UIAlertAction(title: "확인", style: .default)
+
+                                    alert.addAction(ok)
+
+                                    self.present(alert, animated: true, completion: nil)
                                 }
                             }
 
-                            }
+                        }
                     }
                     let cancel = UIAlertAction(title: "취소", style: .cancel)
 
-                    
                     //3. 1 + 2
                     alert.addAction(ok)
                     alert.addAction(cancel)
@@ -540,38 +605,9 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
             
             cell.commentButton.menu = menu
             cell.commentButton.showsMenuAsPrimaryAction = true
-            
-//            cell.commentButtonClicked = { [unowned self] in
-//                // 기능 구현 위치
-//                print("commentButtonClicked\(indexPath)")
-//
-//            }
-            
-
-                
    
         }
         
-        
         return cell
     }
-    
-
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        
-    }
-    
-    
-}
-
-extension PostDetailViewController: CommentTableViewCellDelegate {
-    
-    func categoryButtonTapped() {
-        print(#function)
-    }
-    
-    
 }

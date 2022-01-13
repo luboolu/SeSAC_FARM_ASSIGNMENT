@@ -66,55 +66,66 @@ class SignUpViewController: UIViewController {
         if mainView.passwordTextField.text == mainView.passwordConfirmTextField.text {
             //비밀번호, 비밀번호 확인 서로 동일하면 api 통신 시작
             
-            viewModel.signUp {
-                self.hud.dismiss(afterDelay: 0)
+            viewModel.signUp { result in
+                self.hud.dismiss(animated: true)
                 
-                guard let token = UserDefaults.standard.string(forKey: "token") else{
-                    //로그인에 실패했으면, userdefaults의 token 값을 nil로 만들어줬다.
-                    //로그인에 실패했다는 alert를 띄워주자
+                if result == .succeed {
+                    guard let token = UserDefaults.standard.string(forKey: "token") else{
+                        //로그인에 실패했으면, userdefaults의 token 값을 nil로 만들어줬다.
+                        //로그인에 실패했다는 alert를 띄워주자
+                        
+                        //1. UIAlertController 생성: 밑바탕 + 타이틀 + 본문
+                        let alert = UIAlertController(title: "Failed", message: "\(self.viewModel.error?.message[0].messages[0].message ?? "")", preferredStyle: .alert)
+                        
+                        //2. UIAlertAction 생성: 버튼들을...
+                        let ok = UIAlertAction(title: "확인", style: .default)
+
+                        //3. 1 + 2
+                        alert.addAction(ok)
+                        
+                        //4. present
+                        self.present(alert, animated: true, completion: nil)
+
+                        return
+                    }
                     
+                    //로그인 성공
+                    //print(UserDefaults.standard.string(forKey: "token"))
                     //1. UIAlertController 생성: 밑바탕 + 타이틀 + 본문
-                    let alert = UIAlertController(title: "Failed", message: "\(self.viewModel.error?.message[0].messages[0].message ?? "")", preferredStyle: .alert)
+                    //let alert = UIAlertController(title: "타이틀 테스트", message: "메시지가 입력되었습니다.", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "회원가입 성공", message: "새싹농장에 오신걸 환영합니다!", preferredStyle: .alert)
                     
                     //2. UIAlertAction 생성: 버튼들을...
-                    let ok = UIAlertAction(title: "확인", style: .default)
+                    let ok = UIAlertAction(title: "확인", style: .default) { action in
+                        //확인 버튼이 눌리면, post view controller로 화면 전환
+                        DispatchQueue.main.async {
+                            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+                            windowScene.windows.first?.rootViewController = UINavigationController(rootViewController: PostViewController())
+                            windowScene.windows.first?.makeKeyAndVisible()
+                        }
+                    }
 
                     //3. 1 + 2
                     alert.addAction(ok)
                     
                     //4. present
                     self.present(alert, animated: true, completion: nil)
+                } else {
+                    let alert = UIAlertController(title: "네트워크 통신 에러", message: "네트워크 상태를 확인해주세요", preferredStyle: .alert)
+                    let ok = UIAlertAction(title: "확인", style: .default)
 
-                    return
+                    alert.addAction(ok)
+
+                    self.present(alert, animated: true, completion: nil)
                 }
                 
-                //로그인 성공
-                //print(UserDefaults.standard.string(forKey: "token"))
-                //1. UIAlertController 생성: 밑바탕 + 타이틀 + 본문
-                //let alert = UIAlertController(title: "타이틀 테스트", message: "메시지가 입력되었습니다.", preferredStyle: .alert)
-                let alert = UIAlertController(title: "회원가입 성공", message: "새싹농장에 오신걸 환영합니다!", preferredStyle: .alert)
-                
-                //2. UIAlertAction 생성: 버튼들을...
-                let ok = UIAlertAction(title: "확인", style: .default) { action in
-                    //확인 버튼이 눌리면, post view controller로 화면 전환
-                    DispatchQueue.main.async {
-                        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-                        windowScene.windows.first?.rootViewController = UINavigationController(rootViewController: PostViewController())
-                        windowScene.windows.first?.makeKeyAndVisible()
-                    }
-                }
 
-                //3. 1 + 2
-                alert.addAction(ok)
-                
-                //4. present
-                self.present(alert, animated: true, completion: nil)
 
             }
         } else {
-            self.hud.dismiss(afterDelay: 0)
+            self.hud.dismiss(animated: true)
             //1. UIAlertController 생성: 밑바탕 + 타이틀 + 본문
-            let alert = UIAlertController(title: "Failed", message: "비밀번호가 일치하지 않습니다.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Failed", message: "비밀번호/비밀번호 확인이 서로 일치하지 않습니다.", preferredStyle: .alert)
             
             //2. UIAlertAction 생성: 버튼들을...
             let ok = UIAlertAction(title: "확인", style: .default)

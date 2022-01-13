@@ -13,10 +13,10 @@ class SignInViewModel {
     var password: Observable<String> = Observable("")
     var error: UserError?
     
-    func signIn(completion: @escaping () -> Void) {
+    func signIn(completion: @escaping (APIResult?) -> Void) {
         print("sign in api start")
         
-        APIService.signIn(identifier: identifier.value, password: password.value) { data, apierror, usererror in
+        APIService.signIn(identifier: identifier.value, password: password.value) { data, apiresult, usererror in
             
             //로그인 했으면, 토큰을 userdefault에 저장해야함!!
             if let data = data {
@@ -30,11 +30,9 @@ class SignInViewModel {
                 UserDefaults.standard.set(nil, forKey: "userid")
             }
             
-            print(apierror)
-            print(usererror)
+
             
-            
-            completion()
+            completion(apiresult)
         }
     }
     

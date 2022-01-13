@@ -10,7 +10,7 @@ import Foundation
 class PostViewModel {
     
     var postData: [PostElement]?
-    var pagenationData: [Post] = []
+    //var pagenationData: [Post] = []
     
     
     func getPost(start: Int, limit: Int, completion: @escaping (APIResult?) -> (Void)) {
@@ -25,14 +25,14 @@ class PostViewModel {
                 return
             }
             
-            APIService.getPost(token: token, start: start, limit: limit) { post, apiresult, usererror in
+            APIService.getPost(token: token, start: 0, limit: 100) { post, apiresult, usererror in
                 
                 if let post = post {
 
                     self.postData = post
-                    self.pagenationData.append(post)
-                    print("start!!!!!!!!", start)
-                    print("count!!!!!!!!", self.pagenationData.count)
+                    //self.pagenationData.append(post)
+                    //print("start!!!!!!!!", start)
+                    //print("count!!!!!!!!", self.pagenationData.count)
 
                     
                 }

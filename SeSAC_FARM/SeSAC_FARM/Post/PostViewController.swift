@@ -78,9 +78,9 @@ class PostViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print(#function)
-        self.startPage = 0
-        self.viewModel.postData = []
-        self.viewModel.pagenationData = []
+        //self.startPage = 0
+        //self.viewModel.postData = []
+        //self.viewModel.pagenationData = []
         getPost()
     }
     
@@ -145,16 +145,24 @@ class PostViewController: UIViewController {
             
             if result == .unauthorized {
                 print("사용자 정보 만료!")
-                self.hud.dismiss(afterDelay: 0)
+                self.hud.dismiss(animated: true)
                 self.updateToken()
-            } else {
+            } else if result == .succeed {
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                     self.postTableView.reloadData()
-                    self.hud.dismiss(afterDelay: 0)
+                    self.hud.dismiss(animated: true)
                 }
 
+            } else {
+                self.hud.dismiss(animated: true)
+                
+                let alert = UIAlertController(title: "네트워크 통신 에러", message: "네트워크 상태를 확인해주세요", preferredStyle: .alert)
+                let ok = UIAlertAction(title: "확인", style: .default)
+
+                alert.addAction(ok)
+
+                self.present(alert, animated: true, completion: nil)
             }
-            print("================================================")
         }
     }
     
@@ -181,9 +189,9 @@ class PostViewController: UIViewController {
     @objc func resetButtonClicked() {
         print(#function)
         //get post api 통신 다시 해서 tableview reload
-        self.startPage = 0
-        self.viewModel.postData = []
-        self.viewModel.pagenationData = []
+//        self.startPage = 0
+//        self.viewModel.postData = []
+//        self.viewModel.pagenationData = []
         getPost()
 
     }
@@ -213,7 +221,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource, UITabl
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return self.viewModel.postData?.count ?? 0
-        print("cell: ", self.viewModel.pagenationData.count * self.limitPost)
+        //print("cell: ", self.viewModel.pagenationData.count * self.limitPost)
         return self.viewModel.postData?.count ?? 0
     }
     
@@ -227,8 +235,8 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource, UITabl
         }
 //
         print(indexPath)
-        print("pagenationData: ", self.viewModel.pagenationData.count)
-        print("startPage: ", self.startPage)
+        //print("pagenationData: ", self.viewModel.pagenationData.count)
+        //print("startPage: ", self.startPage)
         
         
 //        let data = self.viewModel.pagenationData[indexPath.section]
@@ -258,30 +266,32 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource, UITabl
 //        cell.nicknameLabel.text = "\(indexPath)"
         
         if let data = self.viewModel.postData {
+            if data.count != 0 {
+                let row = data[indexPath.row]
+                print(row.user.username)
+                cell.nicknameLabel.text = "  \(row.user.username)  "
+                cell.contentTextView.text = "\(row.text)"
 
-            let row = try! data[indexPath.row]
-            print(row.user.username)
-            cell.nicknameLabel.text = "  \(row.user.username)  "
-            cell.contentTextView.text = "\(row.text)"
 
+                var subStringDate = row.createdAt.substring(from: 0, to: 18)
+                subStringDate.append("Z")
 
-            var subStringDate = row.createdAt.substring(from: 0, to: 18)
-            subStringDate.append("Z")
+                // The default timeZone for ISO8601DateFormatter is UTC
+                let utcISODateFormatter = ISO8601DateFormatter()
+                let utcDate = utcISODateFormatter.date(from: subStringDate)!
 
-            // The default timeZone for ISO8601DateFormatter is UTC
-            let utcISODateFormatter = ISO8601DateFormatter()
-            let utcDate = utcISODateFormatter.date(from: subStringDate)!
+                let df = DateFormatter()
+                df.locale = Locale(identifier: "ko_KR")
+                df.timeZone = TimeZone(abbreviation: "KST")
+                df.dateFormat = "MM/dd hh:mm"
 
-            let df = DateFormatter()
-            df.locale = Locale(identifier: "ko_KR")
-            df.timeZone = TimeZone(abbreviation: "KST")
-            df.dateFormat = "MM/dd hh:mm"
+                let date = df.string(from: utcDate)
 
-            let date = df.string(from: utcDate)
+                cell.dateLabel.text = "\(date)"
 
-            cell.dateLabel.text = "\(date)"
+                
+            }
 
-            
 
         }
 

@@ -15,10 +15,10 @@ class SignUpViewModel {
     var passwordConfirm: Observable<String> = Observable("")
     var error: UserError?
     
-    func signUp(completion: @escaping () -> Void) {
+    func signUp(completion: @escaping (APIResult?) -> Void) {
         print("sign up api start")
         
-        APIService.signUp(username: nickname.value, email: email.value, password: password.value) { data, apierror, usererror in
+        APIService.signUp(username: nickname.value, email: email.value, password: password.value) { data, apiresult, usererror in
 
             
             //회원가입 했으면, 토큰을 userdefault에 저장해야함!!
@@ -32,10 +32,8 @@ class SignUpViewModel {
                 UserDefaults.standard.set(nil, forKey: "userid")
             }
             
-            print(apierror)
-            print(usererror)
-            
-            completion()
+
+            completion(apiresult)
         }
     }
     
